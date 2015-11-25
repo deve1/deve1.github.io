@@ -3,7 +3,7 @@
     {
   "title"    : "Test",
   "category" : "blog",
-  "tags"     : [ null],
+  "tags"     : ["markdown","syntax", null],
   "href"     : "/blog/2015/11/25/test/",
   "date"     : {
     "day"   : "25",

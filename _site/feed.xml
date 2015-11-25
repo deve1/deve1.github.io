@@ -13,7 +13,7 @@
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
     <link href="/" />
     <description><![CDATA[]]></description>
-    <lastBuildDate>Wed, 25 Nov 2015 14:59:32 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 25 Nov 2015 15:53:01 +0900</lastBuildDate>
     <language>en-US</language>
     <generator uri="http://octopress.org/">Octopress</generator>
 
@@ -27,12 +27,285 @@
             <category><![CDATA[blog]]></category>
         
         
+            <category><![CDATA[markdown]]></category>
+        
+            <category><![CDATA[syntax]]></category>
+        
             <guid>/blog/2015/11/25/test/</guid>
             <description>
-                <![CDATA[]]>
+                <![CDATA[Syntax Cheatsheet: Phrase Emphasis italic bold italic bold no-italic_ *no-bold__ no-italic* _no-bold** 문장 중간에라도 * 나 _ 를 공백으로 감싸면 그대로 나타난다. 임의의 위치에서는 * 또는 _와 같이 예외처리할 수 있다. Links Inline: An example 같은 서버안에서는 상대경로로 link text Reference-style labels (titles are optional): An example. Then, anywhere else...]]>
             </description>
             <content:encoded>
-                <![CDATA[]]>
+                <![CDATA[<h2>Syntax Cheatsheet:</h2>
+
+<h3>Phrase Emphasis</h3>
+
+<p><em>italic</em>   <strong>bold</strong></p>
+
+<p><em>italic</em>   <strong>bold</strong></p>
+
+<p><em>no-italic_ *</em>no-bold__ </p>
+
+<p><em>no-italic* _</em>no-bold**</p>
+
+<p>문장 중간에라도 * 나 _ 를 공백으로 감싸면 그대로 나타난다. 임의의 위치에서는 * 또는 _와 같이 예외처리할 수 있다.</p>
+
+<h3>Links</h3>
+
+<p>Inline:    An <a href="http://url.com/" title="Title">example</a></p>
+
+<p>같은 서버안에서는 상대경로로 <a href="/same_server.ext" title="optional title">link text</a></p>
+
+<p>Reference-style labels (titles are optional):</p>
+
+<p>An <a href="/url/to/img.jpg" title="Title">example</a>. Then, anywhere else in the doc, define the link:</p>
+
+<p>옵션으로 <a href="/url/to/img.jpg" title="Title">example</a> 처럼 공백을 넣을 수 있으며,</p>
+
+<p>등도 가능하다.</p>
+
+<p>다음과 같이 함축된 링크명으로 간단히 줄일 수 있다. 링크명은 여러 단어도 가능하며 대소문자를 구분하지 않는다.</p>
+
+<p><a href="http://daringfireball.net/">Daring Fireball</a></p>
+
+<h3>Images</h3>
+
+<p>Inline (titles are optional):</p>
+
+<p><img src="/path/img.jpg" alt="alt text" title="Title"></p>
+
+<p>Reference-style:</p>
+
+<p><img src="/url/to/img.jpg" alt="alt text" title="Title"></p>
+
+<h3>Headers</h3>
+
+<p><a href="http://docutils.sourceforge.net/mirror/setext.html">Setext-style</a>:</p>
+
+<h1>Header 1</h1>
+
+<h2>Header 2</h2>
+
+<p><a href="http://www.aaronsw.com/2002/atx/">atx-style</a> (closing #&#39;s are optional):</p>
+
+<h1>Header 1</h1>
+
+<h2>Header 2</h2>
+
+<h3>헤더 3</h3>
+
+<h4>헤더 4</h4>
+
+<h5>헤더 5</h5>
+
+<h6>Header 6</h6>
+
+<h3>Lists</h3>
+
+<p>Ordered, without paragraphs:</p>
+
+<ol>
+<li> Foo</li>
+<li> Bar</li>
+</ol>
+
+<p>단락이 있는 순차 항목:</p>
+
+<ol>
+<li>사랑</li>
+</ol>
+
+<p>사랑은 자기를 잃어버리는 것.</p>
+
+<ol>
+<li>결혼
+자신의 재산을 물려줄 사람을 지정하는 것.</li>
+</ol>
+
+<p>Unordered, with paragraphs:</p>
+
+<ul>
+<li><p>A list item.</p>
+
+<p>With multiple paragraphs.</p></li>
+<li><p>Bar</p>
+
+<blockquote>
+<p>즐기는 곳이거나 먹는 것이거나 환영!</p>
+</blockquote>
+<div class="highlight"><pre><code class="language-text" data-lang="text">들여쓰기 두번이면  코드블럭이 된다.
+</code></pre></div></li>
+<li><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.<br>
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,<br>
+viverra nec, fringilla in, laoreet vitae, risus.</p></li>
+</ul>
+
+<p>You can nest them:</p>
+
+<ul>
+<li>  Abacus
+
+<ul>
+<li>answer</li>
+</ul></li>
+<li>  Bubbles
+
+<ol>
+<li> bunk</li>
+<li> bupkis
+
+<ul>
+<li>BELITTLER</li>
+</ul></li>
+<li>burper</li>
+</ol></li>
+<li>  Cunning</li>
+</ul>
+
+<p>다음과 같이 항목 중간에 빈줄이 있으면 항목들은 <code>&lt;p&gt;</code>로 감싸진다.</p>
+
+<ul>
+<li><p>새</p></li>
+<li><p>마술</p></li>
+</ul>
+
+<p>1986. What a great season. 은 리스트가 되지않는다.</p>
+
+<h3>Blockquotes</h3>
+
+<blockquote>
+<p>Email-style angle brackets<br>
+are used for blockquotes.</p>
+
+<blockquote>
+<p>And, they can be nested.</p>
+
+<blockquote>
+<p>몇 개까지 될까?</p>
+
+<blockquote>
+<p>4개</p>
+
+<blockquote>
+<p>5개</p>
+
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>10개</p>
+
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+
+<h4>Headers in blockquotes</h4>
+
+<ul>
+<li>You can quote a list.</li>
+<li>Etc.</li>
+</ul>
+
+<blockquote>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.</p>
+</blockquote>
+</blockquote>
+
+<h3>Code Spans</h3>
+
+<p><code>&lt;code&gt;</code> spans are delimited by backticks.</p>
+
+<p>You can include literal backticks like <code>`this`</code>.</p>
+
+<h3>Preformatted Code Blocks</h3>
+
+<p>Indent every line of a code block by at least 4 spaces or 1 tab.</p>
+
+<p>This is a normal paragraph.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">This is a preformatted
+code block.
+</code></pre></div>
+<p>탭문자 들여쓰기</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">탭을 입력할 수가 없으니 수동으로 테스트해야..
+</code></pre></div>
+<p>다음 코드블럭은 </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;div class=&quot;footer&quot;&gt;
+    &amp;copy; 2004 Foo Corporation
+&lt;/div&gt;
+</code></pre></div>
+<p>은 다음과 같이 바뀌어야 한다.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&quot;footer&quot;&amp;gt;
+    &amp;amp;copy; 2004 Foo Corporation
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</code></pre></div>
+<h3>Horizontal Rules</h3>
+
+<p>Three or more dashes or asterisks:</p>
+
+<hr>
+
+<hr>
+
+<hr>
+
+<hr>
+
+<hr>
+
+<hr>
+
+<hr>
+
+<hr>
+
+<h3>Manual Line Breaks</h3>
+
+<p>End a line with two or more spaces:</p>
+
+<p>Roses are red,<br><br>
+Violets are blue.</p>
+
+<h3>Automatic Link</h3>
+
+<p><a href="http://example.com/">http://example.com/</a> 와 십진/16진 인코딩되는 <a href="mailto:address@example.com">address@example.com</a>이 있다.</p>
+
+<h3>Backslash Escapes</h3>
+
+<p>\   backslash<br><br>
+`   backtick<br><br>
+*   asterisk<br><br>
+_   underscore<br><br>
+{}  curly braces<br><br>
+[]  square brackets<br><br>
+()  parentheses<br><br>
+#   hash mark<br><br>
++   plus sign<br><br>
+-   minus sign (hyphen)<br><br>
+.   dot<br><br>
+!   exclamation mark</p>
+]]>
             </content:encoded>
         </item>
     
