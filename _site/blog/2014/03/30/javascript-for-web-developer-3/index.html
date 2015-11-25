@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--   <meta name="google-site-verification" content="aexITLS38FdIRzwj25OVWxm87rpa9l-UV0URTyC9cTs" /> -->
+  <title>
+    언어의 기초
+    
+    - @n0lb00's Blog
+    
+  </title>
+<!--   <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:700,400|Titillium+Web:700,400"> -->
+  <link rel="stylesheet" href="/css/site.css">
+  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <meta name="description" content="프론트엔드 개발자를 위한 자바스크립트 프로그래밍 3장 언어의 기초 요약" />
+  <link rel="alternate" type="application/atom+xml" title="RSS Feed for Nolboo's blog" href="/feed.xml" />
+  <script src="/js/instantclick.min.js" data-no-instant></script>
+  <script data-no-instant>InstantClick.init();</script>
+<!--    -->
+
+<!--<script src="//load.sumome.com/" data-sumo-site-id="dddbf0c343256757114aae302beff42fe1881da466f245b4369b4ba617fed69c" async="async"></script>-->
+
+  
+</head>
+<body>
+  <div class="top-bar"></div>
+
+  <div class="container">
+    <div class="site">
+      <header>
+        <nav>
+          <a class="" href="/">홈</a>
+          <a class="" href="/archive/">전체글</a>
+        </nav>
+        <div class="pull-right right logo">
+          <div class="name">
+            <a href="/">Memopad</a><br />
+            <small>
+              <em>
+                  <a href="/">Memorize everything</a>
+              </em>
+            </small>
+          </div>
+          <a href="/feed.xml"><img class="avatar" src="/images/rss.jpg" alt="RSS" /></a>
+        </div>
+        <div class="clear"></div>
+      </header>
+      <div class="separator"></div>
+      <article>
+  <h1>
+    언어의 기초
+  </h1>
+  <div class="center">
+    <p class="meta">30 Mar 2014</p>
+  </div>
+
+<!--    -->
+
+  <div class="post">
+  <p>이 포스팅은 &quot;프론트엔드 개발자를 위한 자바스크립트(2013 인사이트, 한선용 옮김)&quot;에서 발췌 요약한 것이며, 인사이트와 저작권에 대한 부분을 의논하여 사전 허락을 받은 것입니다. 자세한 내용은 페이스북 <a href="https://www.facebook.com/groups/learnjsproperly/">자바스크립트 제대로 하기 스터디 그룹</a>의 <a href="https://www.facebook.com/groups/learnjsproperly/permalink/364077967076150/?stream_ref=2">해당 포스트</a>를 참조하시기 바랍니다.</p>
+
+<h2>3장. 언어의 기초</h2>
+
+<h3>3.1 문법</h3>
+
+<h4>대소문자 구분</h4>
+
+<p>변수, 함수 이름, 연산자 모두 대소문자를 구분한다.</p>
+
+<h4>식별자(Identifiers)</h4>
+
+<p>&#39;식별자&#39;란 변수, 함수, 프로퍼티, 함수 매개변수의 이름이다. 식별자는 한 개 이상의 문자로 표기하며, 첫 번째 문자는 반드시 글자나 밑줄(_), 달러기호($) 중 하나이다.</p>
+
+<p>ECMAScript는 관습적으로 카멜 케이스로 쓴다. 카멜 케이스란 첫번째글자는 소문자로 쓰고 단어가 바뀔 때는 바뀐 단어의 첫 글자를 대문자로 쓰는 표기법이다. 반드시 써야하는 것은 아니지만 <em>ECMAScript 내장 함수와 객체가 카멜 케이스로 표기되어 있어서</em> 따르길 권한다.</p>
+
+<ul>
+<li><strong>키워드와 예약어 및 true, false, null은 식별자로 사용할 수 없다.</strong></li>
+</ul>
+
+<h4>주석(comments)</h4>
+
+<p>ECMAScript는 한 줄 주석과 블록 주석 모두 C언어 스타일로 표기한다.</p>
+
+<p>// 한줄 주석</p>
+
+<p>/*<br>
+* 블록 주석은 <code>/*</code>로 시작하고, <br>
+* 그 반대 <code>*/</code>로 끝난다.<br>
+*/</p>
+
+<p>두번 째와 세 번째 줄에있는 <code>*</code>는 가독성을 위해 추가한 것이며 기업 애플리케이션에서 선호한다.</p>
+
+<h4>스트릭트 모드(Strict Mode)</h4>
+
+<p>ECMAScript 5에서 도입하였는데, 안전하지 않는 동작에서는 에러를 반환하도록 한다.</p>
+
+<p>전체 스크립트에 스트릭트 모드를 적용하려면 다음 문장을 스크립트 최상단에 추가한다.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+</code></pre></div>
+<p>함수 단 하나만 적용하려면 다음 선언(pragma)을 함수 본문 맨 앞에 추가한다.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">doSomething</span><span class="p">(){</span>
+    <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+    <span class="c1">// 함수 본문</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>IE 10+, 파이어폭스 4+, 사파리 5.1+, 오페자 12+, 크롬에서 지원한다.</p>
+
+<h4>문장(Statements)</h4>
+
+<p>ECMAScript에서 각 문장은 세미콜론으로 종료한다. 꼭 써야하는 것은 아니지만 여분의 공백 제거, 압축 시 문법 에러, 성능 향상 등의 이유로 세미콜론으로 종료해라.</p>
+
+<p>C 언어 스타일 문법을 써서 여러 문장을 코드 블록으로 합칠 수 있다. <code>{</code>로 시작하여 <code>}</code>로 끝난다. 실행한는 문장이 하나뿐이더라도 에러의 원인이 되기도 하므로 코드블록을 써라.</p>
+
+<h3>3.2 키워드와 예약어</h3>
+
+<p>ECMAScript의 키워드와 예약어는 식별자 이름이나 프로퍼티 이름으로 사용하지 마라.</p>
+
+<h3>3.3 변수</h3>
+
+<p>ECMAScript는 느슨한 변수타입을 사용하므로, 변수에 어떠한 타입의 데이터라도 저장할 수 있다. 모든 변수는 단순히 값에 대한 이름 붙은 플레이스홀더일 뿐이다.</p>
+
+<p>변수를 정의 할 때에는 var 연산자 다음에 변수 이름을 쓴다. var는 키워드이며, 변수 이름은 식별자이다. 변수를 초기화하지 않으면 특별한 값 undefined 가 할당되며, 다음과 같이 변수 선언과 동시에 값을 할당할 수 있다.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;h1&quot;</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>var 연산자는 변수를 로컬 스코프에서 정의한다.</strong> 함수 안에서 var 키워드를 써서 변수를 정의하면 해당 변수는 함수를 종료하는 즉시 파괴된다.</p>
+
+<p><em>var 연산자를 생략하면 변수를 전역으로 정의할 수 있으며, 함수를 호출하는 즉시 변수가 정의되며, 함수 외부에서도 이 변수에 접근할 수 있다. 그러나 이런 패턴은 피해라.</em></p>
+
+<p>변수를 여러 개 선언하려면 쉼표로 구분하여 같은 문장에서 선언하고 초기화할 수 있다. 변수 사이에 줄바꿈과 들여쓰기로 읽기 쉽게 한다:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;h1&quot;</span><span class="p">,</span>
+    <span class="nx">found</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nx">age</span> <span class="o">=</span> <span class="mi">29</span><span class="p">;</span>
+</code></pre></div>
+<h3>3.4 데이터 타입</h3>
+
+<p>ECMAScript에는 Undefined, Null, Boolean, 숫자, 문자열의 다섯가지 기본적인 데이터 타입(원시 primitive 데이터 타입)이 있으며, 이름-값 쌍의 순서없는 목록 즉, 객체라는 복잡한 데이터 타입도 있다. 이 여섯 가지의 데이터 타입은 동적이어서 한 가지 데이터 타입이 여러 특성을 가질 수 있다.</p>
+
+<h4>typeof 연산자(Operator)</h4>
+
+<p>typeof 연산자를 통해 데이터 타입을 알 수 있으며, 값(변수)에 typeof 연산자를 적용하면 다음 문자열 중 하나를 반환한다.</p>
+
+<ul>
+<li>정의되지 않은 변수 : &quot;undefined&quot;</li>
+<li>불리언 : &quot;boolean&quot;</li>
+<li>문자열 : &quot;string&quot;</li>
+<li>숫자 : &quot;number&quot;</li>
+<li>함수를 제외한 객체 또는 null : &quot;object&quot;</li>
+<li>함수 : &quot;function&quot;</li>
+</ul>
+
+<h4>undefined 타입</h4>
+
+<p>기본적으로 초기화하지 않는 변수에는 항상 undefined 값이 할당된다. 그러나, 변수를 항상 초기화하는 습관을 갖으면 typeof에서 undefined를 반환했을 때 해당 변수가 초기화되지 않은 것인지, 정의되지 않은 것인지 바로 알 수 있다.</p>
+
+<h4>Null 타입</h4>
+
+<p>Null 타입의 값은 특별한 값인 null이다. null은 빈 객체를 가리키는 포인터이므로 null에 typeof를 호출하면 object를 반환하며, 객체를 사용해야 하지만 해당 객체를 이용할 수 없을 때 null을 사용하여 해당 변수가 객체를 자리키는지 명시적으로 확인할 수 있다.</p>
+
+<h4>불리언 타입</h4>
+
+<p>불리언 타입은 ECMAScript 에서 가장 많이 쓰이는 데이터 타입 중 하나이며 true와 false 두 가지 리터럴 값만 가진다. 숫자 타입과 달라, ture는 1이 아니며, false는 0이 아니다.</p>
+
+<p>Boolean() 함수는 어떤 타입의 데이터에서도 호출할 수 있고 항상 불리언 값을 반환한다.</p>
+
+<table><thead>
+<tr>
+<th>데이터 타입</th>
+<th>true 값</th>
+<th>false 값</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>불리언</td>
+<td>ture</td>
+<td>false</td>
+</tr>
+<tr>
+<td>문자열</td>
+<td>비어 있지 않은 문자열 모두</td>
+<td>&quot; &quot;(빈 문자열)</td>
+</tr>
+<tr>
+<td>숫자</td>
+<td>0이 아닌 모든 숫자, 무한대 포함</td>
+<td>0, NaN</td>
+</tr>
+<tr>
+<td>객체</td>
+<td>모든 객체</td>
+<td>null</td>
+</tr>
+<tr>
+<td>Undefined</td>
+<td>해당없음</td>
+<td>undefined</td>
+</tr>
+</tbody></table>
+
+<p>if 문 같은 제어문은 타입을 자동으로 불리언으로 바꾸므로 위 표의 변환 규칙을 반드시 이해해야한다.</p>
+
+<h4>숫자 타입</h4>
+
+<p>기본적인 숫자 리터럴 형식은 10진법이다. 정수는 8진수 리터럴, 16진수 리터럴도 가능하지만 실제 계산시에는 항상 10진수로 변환하여 계산한다.</p>
+
+<h5>부동소수점 숫자</h5>
+
+<p>부등소수점 숫자를 표현하려면 반드시 소수점이 있어야 하며, 소수점 뒤에 숫자를 쓴다. <code>.1</code>도 가능하지만 권장하지 않는다.</p>
+
+<p>부동소수점 숫자는 정수보다 메모리를 두 배로 소모하므로 소수점 뒤에 숫자가 없다면 정수로 변환된다.</p>
+
+<p>대단히 크거나 작은 부동소수점 숫자를 표현할 때는 &#39;e- 표기법(지수 표기법)&#39;을 쓴다. 기본적으로 소수점 뒤에 0이 6개 이상 있는 모든 부동소수점 숫자를 지수 표기법으로 변환한다. </p>
+
+<h5>숫자 범위</h5>
+
+<p>메모리 제한 때문에 모든 숫자를 표현할 수 없다. ECMAScript로 표현할 수 있는 최소값은 브라우저마다 다르지만 보통 5e-324이다. 최대값은 보통 1.7976931348623157e+308이다. 이 범위를 벗어나면 자동으로 (-)Infinity로 변환된다.</p>
+
+<h5>NaN(Not a Number)</h5>
+
+<p>숫자를 반환할 것으로 의도한 조작이 실패했을 때 반환하는 특별한 값이며, <strong>에러를 반환하는 것은 아니다.</strong></p>
+
+<p>NaN이 포함된 모든 조작은 항상 NaN을 반환하며, 심지어 NaN끼리도 서로 일치하지 않는다. isNaN() 함수는 해당 값이 &#39;숫자가 아닌 값&#39;인지 검사한다. 문자열 &quot;10&quot;이나 불리언 값은 숫자도 바꿀 수 있다.</p>
+
+<h5>숫자 변환</h5>
+
+<p>숫자가 아닌 값을 바꾸는 함수는 어떤 데이터 타입에도 쓸 수 있는 Number(), 문자열을 숫자로 바꾸는 parseInt()와 parseFlaot() 함수 세 가지이다.</p>
+
+<p>Number()함수로 문자열을 숫자로 바꿀 때는 여러 규칙을 기억해야 한다. </p>
+
+<p>정수 형태의 문자열을 숫자로 바꿀 때 보통 parseInt()을 사용하며, <code>var num = parseInt(&quot;10&quot;, 10)</code>의 형태로 사용한다. </p>
+
+<p>parseFlaot() 함수는 두 번째 소수점과 같은 잘못된 부동소수점 숫자를 만날 때까지 파싱을 계속하여, 그 이후 문자열은 무시한다. 리딩제로는 항상 무시한다. 또한, 항상 10진수 기준으로 파싱하기 때문에 16진수는 항상 0을 반환한다.</p>
+
+<h4>문자열 타입</h4>
+
+<p>문자열 데이터 타입은 16비트 유니코드 문자의 연속이다. 문자열은 큰따옴표나 작은따옴표로 감싸서 표현한다. PHP에서는 큰따옴표와 작은따옴표를 다르게 해석하지만 ECMAScript는 완전히 똑같게 해석한다. 그러나 짝은 맞아야 한다.</p>
+
+<h5>문자 리터럴</h5>
+
+<h5>문자열의 성질</h5>
+
+<p>ECMAScript에서 문자열은 불변(immutable)이다. 즉, 문자열이 만들어지면 그 값을 바꿀 수 없다. 변수에 저장된 문자열을 바꾸려면 기존의 문자열을 파괴하고 다음과 같이 해당 변수에 새 문자열을 채워야 한다.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">lang</span> <span class="o">=</span> <span class="s2">&quot;Java&quot;</span><span class="p">;</span>
+<span class="nx">lang</span> <span class="o">=</span> <span class="nx">lang</span> <span class="o">+</span> <span class="s2">&quot;Script&quot;</span><span class="p">;</span>
+</code></pre></div>
+<h5>문자열로 변환</h5>
+
+<p>값을 문자열로 바꾸는 방법은 거의 모든 값에 존재하는 toString() 메서드를 사용하는 것과 호출할 값이 null이나 undefined일 가능성이 있을 경우 String() 함수를 사용하는 두 가지 방법이 있다.</p>
+
+<h4>객체 타입</h4>
+
+<p>객체는 데이터와 기능의 집합이다. 객체는 new 연산자 다음에 새로 만들 객체 타입의 이름을 써서 만든다.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">o</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">();</span>
+</code></pre></div>
+<p>Object 타입은 이 타입에서 파생하는 모든 객체의 원형이기 때문에 Object 타입의 인스턴스는 Object 타입의 프로퍼티와 메서드를 전부 상속한다.</p>
+
+<h3>3.5 연산자(OPERATORS)</h3>
+
+<h4>단항 연산자(Unary Operators)</h4>
+
+<p>단 하나의 값에만 적용되는 연산자이며, 가장 단순한 연산자이다.</p>
+
+<h5>증감 연산자</h5>
+
+<p>C 언어에서 차용한 것이며, 피연산자의 앞에 쓸 수도 있고 뒤에 쓸 수도 있다. <code>++</code>를 피연산자 앞에 쓰면 피연산자에 1을 더하며, <code>--</code>를 쓰면 피연산자에서 1을 뺀다.</p>
+
+<p>증감 연산자를 변수 앞에 쓰면 변수의 값을 바꾼 다음 문장을 계산한다. <strong>변수 뒤에 쓰면 문장을 계산한 다음에 적용되는 중요한 차이가 있다.</strong></p>
+
+<h5>단항 플러스와 단항 마이너스</h5>
+
+<h4>비트 연산자(Bitwise Operators)</h4>
+
+<p><em>가이드에서 언급한 대로 건너뜀</em></p>
+
+<h4>불리언 연산자</h4>
+
+<p>불리언 연산자에는 NOT과 AND, OR 세가지가 있다.</p>
+
+<h5>논리 NOT</h5>
+
+<p>논리 NOT 연산자는 느낌표<code>!</code>로 표시하며 모든 값에 적용할 수 있다. 피연사자를 불리언 값으로 변환한 다음 그 결과를 부정하며, 다음과 같이 동작한다.</p>
+
+<table><thead>
+<tr>
+<th>피연산자</th>
+<th>반환값</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>객체</td>
+<td>false</td>
+</tr>
+<tr>
+<td>빈 문자열</td>
+<td>true</td>
+</tr>
+<tr>
+<td>비어있지 않은 문자열</td>
+<td>false</td>
+</tr>
+<tr>
+<td>숫자 0</td>
+<td>true</td>
+</tr>
+<tr>
+<td>0이 아닌 숫자(Infnity 포함)</td>
+<td>false</td>
+</tr>
+<tr>
+<td>null</td>
+<td>true</td>
+</tr>
+<tr>
+<td>NaN</td>
+<td>true</td>
+</tr>
+<tr>
+<td>undefined</td>
+<td>true</td>
+</tr>
+</tbody></table>
+
+<p>논리 NOT 연산자를 연달아 두 개 쓰면 Boolean() 함수를 쓴 것과 같은 효과가 있다.</p>
+
+<h5>논리 AND</h5>
+
+<p>앰퍼샌드 2개<code>&amp;&amp;</code>로 나타내며 값 두 개에 적용한다. 피연산자가 불리언 값이 아니어도 사용할 수 있으며, 그 동작은 약간 복잡하다;;</p>
+
+<h5>논리 OR</h5>
+
+<p>파이프 두개<code>||</code>로 표현한다. 피연산자가 불리언 값이 아니라도 사용할 수 있으며, 그 동작은 약간 복잡하다;;</p>
+
+<p>다음과 같이 그 행동을 이용해서 변수에 null이나 undefined가 저장되지 않게 할 수 있다:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">myObject</span> <span class="o">=</span> <span class="nx">preferredObject</span> <span class="o">||</span> <span class="nx">backupObject</span><span class="p">;</span>
+</code></pre></div>
+<h4>곱셈 관련 연산자(Multiplicative Operators)</h4>
+
+<p>곱셈, 나눗셈, 나머지의 세가지 곱셈 관련 연산자가 있다.</p>
+
+<h5>곱셈</h5>
+
+<p>아스테리스크<code>*</code>를 써서 나타내며 두 숫자를 곱하는 데 쓰인다.</p>
+
+<h5>나눗셈</h5>
+
+<p>슬래시<code>/</code> 기호로 표현하며, 첫 번째 피연산자를 두 번째 피연산자로 나눈다.</p>
+
+<h5>나머지(Modulus)</h5>
+
+<p>퍼센트 기호<code>%</code>로 나타내며 나눗셈을 적용하고 나머지를 반환한다.</p>
+
+<h4>덧셈 관련 연산자</h4>
+
+<h5>덧셈</h5>
+
+<p>피연산자 중 하나가 문자열이라면 다음 규칙을 따르며, 아래 예제와 같은 흔한 실수를 피해야 한다.</p>
+
+<ul>
+<li>피연산자가 모두 문자열이라면 두 번째 문자열을 첫 번째 문자열에 합한다.</li>
+<li>피연사자 중 하나가 문자열이라면 다른 피연산자를 문자열로 변환하고 두 문자열을 합친다.</li>
+</ul>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">num1</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">num2</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;The sum of 5 and 10 is &quot;</span> <span class="o">+</span> <span class="nx">num1</span> <span class="o">+</span> <span class="nx">num2</span><span class="p">;</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>     <span class="c1">// &quot;The sum of 5 + 10 is 510&quot;</span>
+</code></pre></div>
+<p>이를 피하기 위해서는 <code>(num1 + num2)</code>와 같이 괄호로 감싸 괄호 안을 먼저 계산한 후에 그 결과를 문자열에 합쳐야 한다.</p>
+
+<h5>뺄셈</h5>
+
+<h4>관계 연산자(Relational Operators)</h4>
+
+<p>관계 연산자에는 미만<code>&lt;</code>과 초과<code>&gt;</code>, 이하<code>&lt;=</code>와 이상<code>&gt;=</code> 연산자가 있다. 두 값을 비교하여 불리언 값을 반환한다.</p>
+
+<p>피연산자 중 하나가 숫자라면 다른 피연산자를 숫자로 변환한 후 비교하며, 하나가 불리언이라면 숫자로 바꾼 후 비교한다.</p>
+
+<p>피연산자가 모두 문자열이면 서로 대응하는 문자의 문자 코드를 비교하는데, 알파벳의 대문자 전체가 소문자의 문자 코드보다 작기 때문에 대소문자를 전부 통일한 다음 비교하는 등의 주의가 필요하다.</p>
+
+<p>NaN과 비교는 항상 false를 반환한다.</p>
+
+<h4>동일 연산자(Equality Operators)</h4>
+
+<p>ECMAScript에서는 연산자를 두 벌로 분리해서 &#39;동일&#39; &#39;비동일&#39; 연산자는 비교 전에 타입을 변환하며, &#39;일치&#39; &#39;불일치&#39; 연산자는 <strong>타입 변환 없이</strong> 비교하는 것으로 정했다.</p>
+
+<h5>동일, 비동일(Equal and Not Equal)</h5>
+
+<p>동일 연산자는 <code>==</code>로 표시하며 동일하면 true를 반환한다. 비동일 연산자는 <code>!=</code>로 나타내며 동일하지 않으면 true를 반환한다. 피연산자를 비교하기 전에 변환하며, 이를 종종 &#39;타입 강제(type coercion)&#39;라 부른다.</p>
+
+<ul>
+<li>null과 undefined는 동일하며, 이 둘은 다른 값으로 변환하여 평가하지 않는다.</li>
+<li>피연산자 중 하나가 NaN이라면 동일 연산자는 false를, 비동일 연산자는 true를 반환한다. <strong>피연산자가 모두 NaN이라도 동일 연산자는 항상 false를 반환한다. NaN은 NaN과 같지 않다.</strong></li>
+<li>피연산자가 모두 객체라면 객체끼리 비교하는 것이 아니라 객체에 대한 참조를 비교한다.</li>
+</ul>
+
+<h5>일치, 불일치(Identically Equal and Not Identically Equal)</h5>
+
+<p>일치 연산자는 <code>===</code>로 나타내며 피연산자의 타입을 변환하지 않아도 같을때에만 true를 반환한다. 불일치 연산자는 <code>!==</code>로 나타내며 피연산자의 타입을 변환하지 않는 상태에서 일치하지 않을 때에만 true를 반환한다.</p>
+
+<p>null과 undefined는 비슷한 값이므로 null == undefined는 true를, null === undefined는 false를 반환한다.</p>
+
+<p><strong>동일/비동일 연산자보다는 일치/불일치 연산자를 써라!</strong></p>
+
+<h4>3항 연산자(Conditional Operator)</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">variable</span> <span class="o">=</span> <span class="nx">boolean_expression</span> <span class="o">?</span> <span class="nx">true_value</span> <span class="o">:</span> <span class="nx">false_value</span><span class="p">;</span>
+</code></pre></div>
+<p>boolean_expression이 true면 변수 variable에 true_value를 저장하며, false면 false_value가 저장된다.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">max</span> <span class="o">=</span> <span class="p">(</span><span class="nx">num1</span> <span class="o">&gt;</span> <span class="nx">num2</span><span class="p">)</span> <span class="o">?</span> <span class="nx">num1</span> <span class="o">:</span> <span class="nx">num2</span><span class="p">;</span>
+</code></pre></div>
+<p>위 예제에서는 max에 num1과 num2 중 큰 값이 저장된다.</p>
+
+<h4>할당 연산자(Assignment Operators)</h4>
+
+<p>단순한 할당은 <code>=</code>로 나타내며 단순히 값을 변수에 할당한다. 다음과 같이 복합 할당을 적용하여 줄여 쓸 수 있으나, 성능이 좋아지는 것은 아니다.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">num</span> <span class="o">=</span> <span class="nx">num</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
+<span class="nx">num</span> <span class="o">+=</span> <span class="mi">10</span><span class="p">;</span>      <span class="c1">// 복합 할당으로 위와 같다.</span>
+</code></pre></div>
+<h4>쉼표 연산자</h4>
+
+<p>쉼표(<code>,</code>) 를 사용해 여러문장을 한 문장으로 합칠 때 쓴다.</p>
+
+<h3>3.6 문장(STATEMENTS)</h3>
+
+<p>ECMA-262에는 몇가지 문장이 정의되어 있는데 이를 &#39;제어문: flow-control statements&#39;이라 부르기도 한다. ECMAScript 대부분이 문장을 통해 정의되며 일반적으로 키워드와 연결되어 있다.</p>
+
+<h4>if 문</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">)</span> <span class="nx">statement1</span> <span class="k">else</span> <span class="nx">statement2</span>
+</code></pre></div>
+<p>대부분은 언어에서 가장 많이 쓰이는 제어문이며, 조건에 해당하는 것이 불리언 값이 아니면 Boolean() 함수를 호출하여 불리언 값으로 바꾼다. 실행 코드는 한 줄의 코드라도 코드 블록으로 사용하라. if문을 연이어 쓸 수도 있다.</p>
+
+<h4>do-while 문</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">do</span> <span class="p">{</span> 
+    <span class="nx">statement</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nx">expression</span><span class="p">);</span>
+</code></pre></div>
+<p>do-while 문은 평가전 루프이며, 이는 루프의 종료 조건을 평가하기 전에 루프 본문을 실행한다는 뜻이다. 루프 본문을 적어도 한번은 실행한 후 빠져나가야 하는 상황에서 주로 사용한다.</p>
+
+<h4>while 문</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">while</span><span class="p">(</span><span class="nx">expression</span><span class="p">)</span> <span class="nx">statement</span>
+</code></pre></div>
+<p>while문은 평가 후 루프이며, 이는 루프 본문을 실행하기 전에 종료 조건을 평가한다는 뜻이다.</p>
+
+<h4>for 문</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">for</span> <span class="p">(</span><span class="nx">initialization</span><span class="p">;</span> <span class="nx">expression</span><span class="p">;</span> <span class="nx">post</span><span class="o">-</span><span class="nx">loop</span><span class="o">-</span><span class="nx">expression</span><span class="p">)</span> <span class="nx">statement</span>
+</code></pre></div>
+<p>for 문은 평가후 루프인데, 루프에 들어가기 전에 변수를 초기화(initialization)할 수 있으며 루프 후 코드(post-loop-expression)도 지정할 수 있다. 조건 표현식이 true일 때만 실행하므로, while 문과 같이 루프 본문의 코드를 실행하지 않을 때도 있다. 루프 본문을 실행하면 루프 후 코드 역시 실행한다. </p>
+
+<p>while 루프로 실행할 수 없는 일은 for 루프로도 불가능하다. for 루프는 단순히 루프 제어와 관련된 코드를 한곳에 모았을 뿐이다.</p>
+
+<p><strong>for 루프에서 반복을 결정하는 변수(i:iteration)를 반드시 for 루프의 변수 초기화 부분에서 var 키워드로 초기화해야 하는 건 아니다. for 루프 밖에서 초기화해도 된다. 또한, ECMAScript에는 블록 레벨 변수가 존재하지 않아 루프 안에서 변수를 선언하더라도 밖에서 이 변수에 접근할 수 있다.</strong></p>
+
+<p>옵션인 초기화, 조건 표현식, 루프 후 코드를 모두 생략하여 무한루프를 생성할 수도 있으며, 조건 표현식 하나만 명시하면 while 루프처럼 동작한다.</p>
+
+<h4>for-in 문</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">for</span> <span class="p">(</span><span class="nx">property</span> <span class="k">in</span> <span class="nx">expression</span><span class="p">)</span> <span class="nx">statement</span>
+</code></pre></div>
+<p>for-in 문은 엄격한 반복문이다. for-in 문은 객체의 프로퍼티를 나열하는데 사용한다.</p>
+
+<h4>문장 레이블</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">label</span><span class="o">:</span> <span class="nx">statement</span>
+</code></pre></div>
+<p>문장에 레이블을 붙였다가 나중에 사용가능하며, 일반적으로 중첩된 루프에서 사용한다.</p>
+
+<h4>break 문과 continue 문</h4>
+
+<p>break 문과 continue 문을 통해 루프 내부의 코드 실행을 세밀히 조절할 수 있다. break 문은 즉시 루프에서 빠져나가 루프 다음 문장을 실행하는 반면, continue 문은 즉시 루프를 빠져나가지만 루프 실행은 지속된다.</p>
+
+<p>break 문과 continue 문을 문자 레이블과 함께 사용하면 코드의 특정 위치로 이동할 수 있다.</p>
+
+<p><em>루프는 전체적인 성능에 영향을 미치며, 개발자의 의도를 파악하기 어렵게 만들어 디버그나 유지 보수에도 문제가 생길 수 있으니 continue 문은 사용하지 마라.</em></p>
+
+<h4>with 문</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">with</span> <span class="p">(</span><span class="nx">expression</span><span class="p">)</span> <span class="nx">statement</span><span class="p">;</span>
+</code></pre></div>
+<p>with 문은 코드의 스코프를 특정 객체에 고정한다. 원래 의도는 특정 객체를 코드에서 매우 자주 참조할 때 편리하자는 것이었다.</p>
+
+<p>with 문 내부의 변수는 우선 지역 변수로 간주한다. 지역 변수에서 찾을 수 없다면 with 문과 함께 쓴 객체의 프로퍼티 중에서 같은 이름으로 검색하여, 해당 이름을 프로퍼티로 평가한다.</p>
+
+<p><strong>스트릭트 모드에서는 with 문을 금지하며 문법 에러로 간주한다. with 문은 성능에 악영향이 있으며 디버그도 힘들어, 배포할 최종 코드에 with 문을 쓰지 마라.</strong></p>
+
+<h4>switch 문</h4>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">switch</span> <span class="p">(</span><span class="nx">expression</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">case</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">statement</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">statement</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">statement</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">statement</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">default</span><span class="o">:</span> <span class="nx">statement</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>if 문과 관련이 깊으며 C언어 기반의 문법과 매우 비슷하다. switch 문의 각 case는 &#39;표현식이 value와 일치하면 statement를 실행하라&#39;는 의미이다. break 키워드를 코드 실행을 멈추고 switch 문을 빠져나가라는 의미이며, 쓰지 않으면 다음 case를 계속 평가한다. default 키워드는 case 중 value로 평가되는 것이 없을 때 실행할 문장이다. 즉, else 문과 같은 구실을 한다.</p>
+
+<p>case 문마다 break 문을 넣어서 다음 case까지 진행하지 않게 하라. 만약 다음 case 문까지 진행하기 해야 한다면, 주석(<code>/* falls through */</code> 등)을 달아서 의도적으로 break 문을 생략했으며 실수가 아님을 분명히 한다.</p>
+
+<p>ECMAScript의 switch 문은 모든 데이터 타입에서 동작하는 고유한 특징이 있어 문자열과 객체에서도 사용할 수 있으며, 값이 상수일 필요가 없으며 변수나 표현식도 쓸 수 있다.</p>
+
+<p><strong>switch 문은 일치 연산자(<code>===</code>)로 값을 비교하므로 타입 변환이 일어나지 않는다.</strong></p>
+
+<h3>3.7 함수</h3>
+
+<p>함수는 문장을 캡슐화하여, 언제 어디서든 실행할 수 있게 하므로 모든 언어의 핵심이다. function 키워드로 정의하며 그 뒤에 매개변수와 함수 본문을 순서대로 쓴다.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">functionName</span><span class="p">(</span><span class="nx">arg0</span><span class="p">,</span> <span class="nx">arg1</span><span class="p">,</span> <span class="p">...</span> <span class="p">,</span> <span class="nx">argN</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">statements</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>함수는 꼭 값을 반환하지 않아도 된다. 모든 함수는 return 문 뒤에 반환값을 써서 값을 반환할 수 있다. return 문 뒤의 코드는 결코 실행되지 않는다.</p>
+
+<p>return 문 뒤에 반환값을 쓰지 않아도 되며, 이 때 함수는 return 문을 만나는 즉시 실행을 멈추고 undefined 값을 반환한다.</p>
+
+<p><strong>함수는 항상 값을 반환하거나 항상 반환하지 않게 만들어라. 즉, 반환에 일관성이 있어야 한다. 그렇지 않으면 디버그하기 어려울 수 있다.</strong></p>
+
+<p>스트릭트 모드에서의 함수 제한</p>
+
+<ul>
+<li>함수 이름과 매개변수 이름에 eval이나 arguments는 쓸 수 없다.</li>
+<li>서로 다른 매개변수에 결코 같은 이름을 쓸 수 없다.</li>
+</ul>
+
+<h4>매개변수의 이해</h4>
+
+<p>ECMAScript 함수는 매개변수 숫자를 따지지 않으며 데이터 타입도 체크하지 않는다.</p>
+
+<p>함수는 arguments라는 객체를 하나 갖는데, 이 객체를 통해 매개변수의 값에 접근할 수 있다. arguments 객체는 각 매개변수를 대괄호 표기법, 첫 번째 매개변수는 arguments[0], 두 번째는 arguments[1] 형태로 접근하며 매개변수 개수를 length 프로퍼티를 통해 알 수 있다는 면에서 배열처럼 동작하기는 하지만 Array의 인스턴스는 아니다.</p>
+
+<p><strong>ECMAScript의 매개변수는 모두 값으로 넘겨야 한다. 매개변수를 참조 형식으로 전달할 수는 없다.</strong></p>
+
+<h4>오버로딩 없음</h4>
+
+<p>ECMAScript에서는 같은 이름으로 함수를 여러 번 정의하면 마지막 함수가 해당 이름을 소유한다.</p>
+
+<p>함수에 넘긴 매개변수의 타입과 숫자를 체크해서 그에 맞게 반응하는 방법으로 오버로딩을 흉내낼 수 있다.</p>
+
+<h2>관련 글들</h2>
+
+<ul>
+<li><a href="http://nolboo.github.io/blog/2014/03/27/javascript-for-web-developer-2/">HTML 속의 자바스크립트</a></li>
+<li><a href="http://nolboo.github.io/blog/2014/03/13/how-to-learn-javascript-properly/">자바스크립트 제대로 배우기</a></li>
+<li><a href="http://nolboo.github.io/blog/2014/03/18/how-to-learn-javascript-properly-study/">자바스크립트 제대로 배우기 스터디 그룹</a></li>
+</ul>
+
+  </div>
+  <ul class="tags post-tags cf">
+    
+    <li><a href="/search/?tags=javascript">javascript</a></li>
+    
+    <li><a href="/search/?tags=jquery">jquery</a></li>
+    
+    <li><a href="/search/?tags=beginner">beginner</a></li>
+    
+    <li><a href="/search/?tags=guide">guide</a></li>
+    
+    <li><a href="/search/?tags=study">study</a></li>
+    
+    <li><a href="/search/?tags=studyjs">studyjs</a></li>
+    
+    <li><a href="/search/?tags=facebook">facebook</a></li>
+    
+    <li><a href="/search/?tags=group">group</a></li>
+    
+  </ul>
+</article>
+
+<section class="post-footer">
+  <a href="/feed.xml" class="pull-right">
+    <img src="/images/rss.jpg" alt="RSS" />
+  </a>
+</section>
+
+<script defer src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<!-- tag, category search -->
+<script defer src="/js/alexpearce.js"></script>
+
+<div class="separator"></div>
+
+<section class="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'deve1githubio'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+      <div class="separator"></div>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+
+  <footer>
+    <p>
+  Powered by <a href="http://jekyllrb.com/">Jekyll</a>,
+  hosted on <a href="http://pages.github.com/">Github Pages</a>
+  | Template inspired by <a href="http://sebastien.saunier.me/">sebastien.saunier.me</a>
+</p>
+
+  </footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <!-- tag, category search -->
+  <script src="/js/alexpearce.js"></script>
+  <!-- TOC Generator -->
+  <script src="/js/jquery.toc-1.1.4.min.js"></script>
+  <!-- Google Analytics -->
+  <!--
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42615434-1', 'nolboo.github.io');
+    ga('send', 'pageview');
+  </script>
+  -->
+  <!-- TOC Generator -->
+  <script>
+     $('#toc').toc({exclude: 'h1, h6', autoId: true});
+  </script>
+</body>
+</html>

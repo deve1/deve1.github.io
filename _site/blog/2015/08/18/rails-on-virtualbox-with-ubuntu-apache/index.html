@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--   <meta name="google-site-verification" content="aexITLS38FdIRzwj25OVWxm87rpa9l-UV0URTyC9cTs" /> -->
+  <title>
+    버추얼박스 우분투에서 아파치와 패신저로 레일즈 프로덕션 모드 실행하기
+    
+    - @n0lb00's Blog
+    
+  </title>
+<!--   <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:700,400|Titillium+Web:700,400"> -->
+  <link rel="stylesheet" href="/css/site.css">
+  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <meta name="description" content="가상서버인 버추얼박스에 우분투 14.04를 설치하고 아파치와 패신저로 레일즈앱을 프로덕션 모드로 항상 실행되도록 하는 방법을 정리하였다." />
+  <link rel="alternate" type="application/atom+xml" title="RSS Feed for Nolboo's blog" href="/feed.xml" />
+  <script src="/js/instantclick.min.js" data-no-instant></script>
+  <script data-no-instant>InstantClick.init();</script>
+<!--    -->
+
+<!--<script src="//load.sumome.com/" data-sumo-site-id="dddbf0c343256757114aae302beff42fe1881da466f245b4369b4ba617fed69c" async="async"></script>-->
+
+  
+</head>
+<body>
+  <div class="top-bar"></div>
+
+  <div class="container">
+    <div class="site">
+      <header>
+        <nav>
+          <a class="" href="/">홈</a>
+          <a class="" href="/archive/">전체글</a>
+        </nav>
+        <div class="pull-right right logo">
+          <div class="name">
+            <a href="/">Memopad</a><br />
+            <small>
+              <em>
+                  <a href="/">Memorize everything</a>
+              </em>
+            </small>
+          </div>
+          <a href="/feed.xml"><img class="avatar" src="/images/rss.jpg" alt="RSS" /></a>
+        </div>
+        <div class="clear"></div>
+      </header>
+      <div class="separator"></div>
+      <article>
+  <h1>
+    버추얼박스 우분투에서 아파치와 패신저로 레일즈 프로덕션 모드 실행하기
+  </h1>
+  <div class="center">
+    <p class="meta">18 Aug 2015</p>
+  </div>
+
+<!--    -->
+
+  <div class="post">
+  <p>오라클에서 만든 버추얼박스<a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a>를 다운로드하여 설치한다. 가상머신를 만들어서 우분투 서버를 설치하는 것을 사진과 함께 단계마다 자세하게 설명한 가이드가 있으니 보고 그대로 따라 하면 된다. 시간도 우분투 서버를 다운받는 시간보다 적게 걸린다.</p>
+
+<ul>
+<li><a href="http://rorlab.gitbooks.io/railsguidebook/content/appendices/ubuntu14server.html">우분투 14.04 서버 세팅하기 (Virtual Box) | 초보자를 위한 레일스 가이드북</a> : 우분투를 설치하기위해 가상머신을 시작하기 전에 브리지 어댑터로 설정하는 것을 빼먹으면 처음부터 다시 설치해야하는 불상사가 일어날 수 있다. &quot;서버 웹운영 환경 설정&quot;은 책의 예제에 맞추어져 있기 때문에 자신의 웹앱에 필요한 것을 설치해야한다.</li>
+<li><a href="https://help.ubuntu.com/lts/serverguide/">우분투 서버 가이드</a>는 참고용.</li>
+</ul>
+
+<h2>프로그램 설치</h2>
+
+<pre class="terminal">
+ssh [user_id]@[서버IP주소]   # user_id와 서버IP주소는 []없이 자신의 것으로 입력
+
+# 여기서부터의 모든 명령어는 별도의 언급이 없는 한 서버에서 실행해야한다.
+
+# 최초 시스템 업데이트
+sudo apt-get update
+sudo apt-get upgrade
+
+# 자신이 필요한 앱 설치
+sudo apt-get install apache2 curl git libmysqlclient-dev mysql-server nodejs
+</pre>
+
+<!-- * 최초 시스템 엡데이트 시에 로케일 에러가 나면 `sudo nano /etc/ssh/sshd_config`에서 `AcceptEnv LANG LC_*`을 제외시킨다. [참고링크](http://stackoverflow.com/a/2510548) -->
+
+<ul>
+<li>mysql-server를 설치할 경우 루트 패스워드를 입력한다. 그렇지 않으면 계속 물어보기 때문에 설치할 때 신중하게 생각해서 입력한다.</li>
+<li>레일즈의 애셋 파이프라인 컴파일러는 자바스크립트 런타입을 요구하므로 Node.js를 설치해야한다.</li>
+</ul>
+
+<p>웹브라우저에 서버IP주소를 입력하면 다음과 같은 아파치 기본화면을 볼 수 있다.</p>
+
+<p><img src="https://farm1.staticflickr.com/684/20407517979_b731fb515b_b.jpg" alt=""></p>
+
+<h3>RVM, Ruby 설치</h3>
+
+<pre class="terminal">
+# 요구되는 앱 설치
+sudo apt-get install -y curl gnupg build-essential
+
+# RVM 설치
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+curl -L https://get.rvm.io | bash -s stable
+
+sudo addgroup rvm
+sudo usermod -a -G rvm [user_id]  :user_id는 []없이 자신의 것으로 입력
+
+if sudo grep -q secure_path /etc/sudoers; then sudo sh -c "echo export rvmsudo_secure_path=1 >> /etc/profile.d/rvm_secure_path.sh" && echo Environment variable installed; fi
+
+exit
+</pre>
+
+<p>RVM을 작동시키기위해 서버에 재로그인한다. <code>service ssh reload</code>로도 해결될 것 같지만 우분투 깔기 귀찮아서 패스한다.(다른 분이 해보고 제보해주셨으면 합니다:)</p>
+
+<pre class="terminal">
+ssh [user_id]@[서버IP주소]   # user_id와 서버IP주소는 []없이 자신의 것으로 입력
+
+# 특정 OS에서 RVM 구동 시 요구되는 라이브러리 설치
+rvm requirements --autolibs=enabled
+</pre>
+
+<p>원하는 버전의 루비를 설치한다. 최신 버전을 설치하려면:</p>
+
+<pre class="terminal">
+rvm install ruby
+rvm --default use ruby
+rvm list
+</pre>
+
+<p>특정 버전(X.X.X)을 설치하려면:</p>
+
+<pre class="terminal">
+rvm install ruby-X.X.X
+rvm --default use ruby-X.X.X
+rvm list
+</pre>
+
+<h2>Passenger 설치</h2>
+
+<p>Rails Server와 SQLite는 가볍고 간편해서 개발환경에는 적합하나 대량 사용자와 트랙잭션의 서비스에는 적합하지 않다. 그러한 프러덕션 서비스 환경에서 강력한 웹서버와 애플리케이션 서버가 필요하며, Apache와 Passenger가 그 중의 하나이다.</p>
+
+<p>Nginx와 Apache는 웹서버이며, HTTP 트랜잭션을 핸들링하고 정적 파일을 서비스한다. 그러나 루비 애플리케이션 서버가 아니어서 루비 애플리케이션을 직접 돌릴 수 없다. NignX와 Apache는 Passenger와 같은 애플리케이션 서버와 함께 사용되야 한다.</p>
+
+<p>Passenger는 독립실행모드와 Nginx/Apache 결합모드가 있으며, 결합모드에서는 동시에 여러 앱을 호스트할 수 있다. 독립실행모드와 Nginx 결합모드가 Apache 결합모드보다 약간 빠르다.</p>
+
+<p>이제 Passenger를 설치해보자:</p>
+
+<pre class="terminal">
+# PGP 키를 설치하고 APT HTTPS 지원을 추가한다.
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
+sudo apt-get install -y apt-transport-https ca-certificates
+
+# APT 저장소 추가
+sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main > /etc/apt/sources.list.d/passenger.list'
+sudo apt-get update
+
+# Passenger + Apache 모듈 설치
+sudo apt-get install -y libapache2-mod-passenger
+</pre>
+
+<p>패신저 아파치 모듈을 enable하고(이미 되어 있을 수도 있다) 아파치를 재시작한다.</p>
+
+<pre class="terminal">
+sudo a2enmod passenger
+sudo apache2ctl restart
+</pre>
+
+<p>설치를 검증한다. 단 하나의 에러도 나면 안된다.</p>
+
+<pre class="terminal">
+sudo passenger-config validate-install
+</pre>
+
+<p>아파치가 패신저 코어 프로세스를 시작시켰는지 확인한다. 다음 명령어로 패신저 프로세스와 아파치 프로세스를 모두 볼 수 있어야 한다.</p>
+
+<pre class="terminal">
+sudo passenger-memory-stats
+
+sudo apt-get update     # 업데이트는 자주!
+sudo apt-get upgrade
+</pre>
+
+<h2>비트버킷을 이용하여 서버에 코드 복사</h2>
+
+<p>비트버킷 저장소에 코드를 푸시한다. 비트버킷이나 깃허브에 사용하지 않았던 분은 <a href="https://nolboo.github.io/blog/2013/10/06/github-for-beginner/">완전 초보를 위한 깃허브</a>를 참조한다. 물론 코드를 서버에 직접 복사하는 방법도 있다.</p>
+
+<p>로컬컴퓨터에서:</p>
+
+<pre class="terminal">
+git push
+</pre>
+
+<p>푸시한 코드를 서버에서 받기 위해서는 먼저 비트버킷의 설정에서 Deployment key를 설정해야 한다.</p>
+
+<ul>
+<li><a href="https://confluence.atlassian.com/display/BITBUCKET/Set+up+SSH+for+Git">참고용 비트버킷 가이드</a></li>
+</ul>
+
+<p>우분투 서버에서:</p>
+
+<pre class="terminal">
+ssh-keygen
+# 이 다음은 그냥 엔터로 답하여 기본값으로 넘어간다.
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/user_/.ssh/id_rsa):
+Created directory '/home/user_id/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/user_id/.ssh/id_rsa.
+Your public key has been saved in /home/user_id/.ssh/id_rsa.pub.
+The key fingerprint is:
+.
+.
+.
+
+cat ~/.ssh/id_rsa.pub
+</pre>
+
+<p>cat 명령으로 출력된 부분을 비트버킷의 Deployment 키로 등록하여 우분투 서버가 비트버킷 저장소를 읽을 수 있도록 한다.</p>
+
+<ul>
+<li><a href="https://confluence.atlassian.com/display/BITBUCKET/Use+deployment+keys">참고용 비트버킷 가이드</a><br></li>
+</ul>
+
+<pre class="terminal">
+cd /var/www/
+sudo git clone [https://user_id@github.com/user_id/myapp.git]   #[]은 비트버킷 저장소의 이름
+cd [myapp]                                      #myapp은 []없이 자신의 앱 이름
+</pre>
+
+<ul>
+<li>비트버킷 연결 프로토콜은 HTTPS를 확실히 선호하게 되었다. SSH로 시도하는 동안 계속해서 키 에러가 나서 <a href="https://confluence.atlassian.com/display/BITBUCKET/Troubleshoot+SSH+Issues">Troubleshoot SSH Issues</a>에 있는 것을 전부 시도했지만 점점 꼬여만 갈뿐이었다.</li>
+</ul>
+
+<p>Bundler 설치하고 실행하여, 앱 의존성<code>dependency</code>을 모두 설치한다.</p>
+
+<pre class="terminal">
+gem install bundler
+bundle install
+</pre>
+
+<h2>MySQL과 세션 암호화 키 설정</h2>
+
+<pre class="terminal">
+sudo nano Gemfile
+</pre>
+
+<p><code>Gemfile</code>에서 프로덕션 그룹에서 사용할 데이터베이스 gem를 지정한다.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">&#39;mysql2&#39;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>mysql 명령을 실행하여 데이터베이스를 만든다. 데이터베이스 이름으로 myapp_production을 사용했으나, 자신이 선호하는 이름으로 지정할 수 있다. 단, 설정 파일에도 적어야 하니 기억은 해놓아야 한다.</p>
+
+<pre class="terminal">
+mysql -u root -pPASSWORD  # PASSWORD는 설치 시 입력하였던 루트 비밀번호
+mysql> CREATE DATABASE myapp_production DEFAULT CHARACTER SET utf8;
+mysql> GRANT ALL PRIVILEGES ON myapp_production.*
+    ->   TO 'username'@'localhost' IDENTIFIED BY 'password';  # username과 password는 자신의 것으로 하여 사용자를 추가한다.
+mysql> EXIT;
+</pre>
+
+<p>이제 루트 유저가 아닌 <code>mysql -u username -ppassword</code>로도 mysql을 실행할 수 있다. </p>
+
+<pre class="terminal">
+sudo nano config/database.yml
+</pre>
+
+<p><code>config/database.yml</code>의 프로덕션 섹션에 다음과 같이 MySQL 관련 정보를 입력한다.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="ss">production</span><span class="p">:</span>
+  <span class="ss">adapter</span><span class="p">:</span> <span class="n">mysql2</span>
+  <span class="ss">encoding</span><span class="p">:</span> <span class="n">utf8</span>
+  <span class="ss">reconnect</span><span class="p">:</span> <span class="kp">false</span>
+  <span class="ss">database</span><span class="p">:</span> <span class="n">myapp_production</span>
+  <span class="ss">pool</span><span class="p">:</span> <span class="mi">5</span>
+  <span class="ss">username</span><span class="p">:</span> <span class="n">username</span>
+  <span class="ss">password</span><span class="p">:</span> <span class="n">password</span>
+  <span class="ss">host</span><span class="p">:</span> <span class="n">localhost</span>
+</code></pre></div>
+<p>username, password, database는 자신의 것으로 바꾼다.</p>
+
+<p>레일즈에서는 세션을 암호화하기 위해 특정 시크릿 키를 필요로 한다. 이것을 <code>config/secrets.yml</code>에 저장한다. 개발과 테스트용 시크릿 키는 로컬에서 자동으로 생성되지만, 프로덕션용 시크릿 키는 수동으로 생성해야 한다.</p>
+
+<pre class="terminal">
+rake secret
+698b2bfc9e8e1...    # 이 줄을 복사
+</pre>
+
+<p>생성된 시크릿 키를 복사하여 <code>config/secrets.yml</code>의 <code>&lt;%= ENV[&quot;SECRET_KEY_BASE&quot;] %&gt;</code> 부분을 지우고 붙여넣는다.</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">production</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">secret_key_base</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">698b2bfc9e8e1...</span> <span class="c1"># 여기에 값으로 붙여넣는다</span>
+</code></pre></div>
+<p>시스템의 다른 유저가 앱의 민감한 정보를 방해하지 못하도록 설정 디렉토리와 데이터베이스 디렉토리의 보안을 강화한다.</p>
+
+<pre class="terminal">
+chmod 700 config db
+chmod 600 config/database.yml config/secrets.yml
+</pre>
+
+<p>이제 마이그레이션을 적용한다.</p>
+
+<pre class="terminal">
+rake db:setup RAILS_ENV="production"
+</pre>
+
+<p>출력된 메시지로 데이타베이스가 제대로 생성되었는지 알 수 있지만, 확인하기 위해 기본적인 SQL 명령어로 데이터베이스를 볼 수도 있다.</p>
+
+<pre class="terminal">
+mysql -u username -ppassword
+mysql> SHOW TABLES;         # 생성된 테이블 목록을 본다
+mysql> EXPLAIN tablename;   # 테이블 구조를 본다.
+mysql> status               # 현재 상태 보기
+mysql> exit
+</pre>
+
+<h2>아파치와 패신저 설정</h2>
+
+<pre class="terminal">
+passenger-config about ruby-command
+passenger-config was invoked through the following Ruby interpreter:
+  Command: /home/user_id/.rvm/gems/ruby-2.0.0-p643/wrappers/ruby    # 이 경로
+  Version: ruby 2.0.0p643 (2015-02-25 revision 49749) [x86_64-linux]
+  ...
+</pre>
+
+<p><code>Command:</code> 뒤에 나온 경로는 뒤에서 사용해야 하니 별도로 복사해 놓는다.</p>
+
+<p>앱의 아파치 설정 파일을 만들고 버추얼 호스트가 자신의 앱을 지정하도록 설정한다.</p>
+
+<pre class="terminal">
+sudo nano /etc/apache2/sites-available/myapp.conf
+</pre>
+
+<p><code>myapp</code>은 자신의 것으로 바꾼다. 아래 설정 내용에서도 자신의 것으로 바꾼다.</p>
+<div class="highlight"><pre><code class="language-apache" data-lang="apache"><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+   <span class="nb">ServerName</span> yourserver.com
+
+   <span class="nb">DocumentRoot</span> <span class="sx">/var/www/myapp/public</span>
+
+   <span class="nb">PassengerRuby</span> <span class="sx">/home/user_id/.rvm/gems/ruby-2.0.0-p643/wrappers/ruby</span>
+
+   <span class="nt">&lt;Directory</span> <span class="s">/var/www/myapp/public</span><span class="nt">&gt;</span>
+      <span class="nb">Allow</span> from <span class="k">all</span>
+      <span class="nb">Options</span> -MultiViews
+      <span class="nb">Require</span> <span class="k">all</span> granted
+   <span class="nt">&lt;/Directory&gt;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</code></pre></div>
+<ul>
+<li><code>ServerName</code>은 자신의 서버 호스팅 이름 또는 서버IP주소를 입력해야한다. </li>
+<li><code>DocumentRoot</code>는 반드시 자신의 레일즈 앱의 <em>public</em> 디렉토리를 입력해야 한다. </li>
+<li><code>PassengerRuby</code>는 위에서 복사해 놓은 루비 경로 <code>/home/user_id/.rvm/gems/ruby-2.0.0-p643/wrappers/ruby</code>를 입력한다. </li>
+<li><code>Require all granted</code>는 아파치 2.4 이상에서 필요하다.</li>
+</ul>
+
+<p>더 자세한 설정은 패신저 <a href="https://www.phusionpassenger.com/library/config/apache/reference/">Configuration reference</a>을 참조한다.</p>
+
+<p>이제 기본 아파치 서버를 내리고 자신의 레일즈앱 myapp을 올릴 순간이다.</p>
+
+<pre class="terminal">
+sudo a2dissite 000-default
+sudo a2ensite myapp.conf
+sudo apachectl restart
+</pre>
+
+<p>웹브라우저에 자신의 서버 주소를 입력하면 자신의 레일즈앱이 떠야 정상이다. 이 글을 쓰면서 두세번의 설치를 했는데 아래와 같은 에러가 낫다. (아래 화면은 패신저 친화적 에러 옵션을 킨 상태이고 이는 프로덕션 모드에서는 지양해야 하는 일이다. 에러가 해결되면 다시 원래대로 돌려놓아야 한다.)</p>
+
+<h3>패신저와 아파치가 자동으로 앱을 찾는 방법</h3>
+
+<p>버추얼 호스트 루트를 앱의 정적 에셋 디렉토리로 지정하면 Ruby, Python, Node.js 웹앱을 시작하는 방법을 패신저가 자동으로 추리한다. 그런 방식으로 &quot;convention over configuration&quot; 철학을 따른다. 루비와 루비온레일즈의 경우 앱의 루트에 <code>config.ru</code> 파일이 있는지도 체크한다. 몇 개의 환경변수 옵션으로 직접 지정하는 방법도 있다. 자세한 것은 <a href="https://www.phusionpassenger.com/library/indepth/ruby/app_autodetection/apache/">How Passenger + Apache autodetects applications</a>을 참조한다.</p>
+
+<h3>경험한 에러와 해결</h3>
+
+<p><img src="https://farm6.staticflickr.com/5771/19999626564_d891f6d8b4_z.jpg" alt=""></p>
+
+<p>위와 같은 에러가 나서 로그파일을 봤더니 권한 문제가 있어서 아래와 같이 해결하였다.</p>
+
+<pre class="terminal">
+sudo chown -R username:group /var/www/myapp/
+sudo apachectl restart
+</pre>
+
+<p><code>username:group /var/www/myapp/</code>은 자신의 것으로 입력한다. chown 등의 권한 관리에 익숙치 않으면 간단한 번역글 <a href="http://nolboo.github.io/blog/2015/08/18/linux-users-groups/">리눅스 사용자와 그룹</a>을 참고한다.</p>
+
+<h2>참고링크</h2>
+
+<ul>
+<li><a href="https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/">Deploying a Ruby app with Passenger to production - Passenger Library</a></li>
+<li><a href="https://pragprog.com/book/rails4/agile-web-development-with-rails-4">Agile Web Development with Rails 4</a></li>
+</ul>
+
+<h2>TODO</h2>
+
+<ul>
+<li>패신저와 웹앱을 돌릴 경우에 <code>user switching</code>이라고도 알려진 <code>user account sandboxing</code>을 추천하고있다.(출처: <a href="https://www.phusionpassenger.com/library/deploy/apache/user_sandboxing.html">Sandboxing apps with Unix user accounts (user switching)</a>) 다음 번에는 이 글을 유저 스위칭으로 업그레이드하려고 한다.</li>
+<li>AWS EC2에 올려본다.</li>
+</ul>
+
+  </div>
+  <ul class="tags post-tags cf">
+    
+    <li><a href="/search/?tags=virtualbox">virtualbox</a></li>
+    
+    <li><a href="/search/?tags=ubuntu">ubuntu</a></li>
+    
+    <li><a href="/search/?tags=linux">linux</a></li>
+    
+    <li><a href="/search/?tags=apache">apache</a></li>
+    
+    <li><a href="/search/?tags=passenger">passenger</a></li>
+    
+    <li><a href="/search/?tags=rails">rails</a></li>
+    
+    <li><a href="/search/?tags=mysql">mysql</a></li>
+    
+    <li><a href="/search/?tags=production">production</a></li>
+    
+  </ul>
+</article>
+
+<section class="post-footer">
+  <a href="/feed.xml" class="pull-right">
+    <img src="/images/rss.jpg" alt="RSS" />
+  </a>
+</section>
+
+<script defer src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<!-- tag, category search -->
+<script defer src="/js/alexpearce.js"></script>
+
+<div class="separator"></div>
+
+<section class="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'deve1githubio'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+      <div class="separator"></div>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+
+  <footer>
+    <p>
+  Powered by <a href="http://jekyllrb.com/">Jekyll</a>,
+  hosted on <a href="http://pages.github.com/">Github Pages</a>
+  | Template inspired by <a href="http://sebastien.saunier.me/">sebastien.saunier.me</a>
+</p>
+
+  </footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <!-- tag, category search -->
+  <script src="/js/alexpearce.js"></script>
+  <!-- TOC Generator -->
+  <script src="/js/jquery.toc-1.1.4.min.js"></script>
+  <!-- Google Analytics -->
+  <!--
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42615434-1', 'nolboo.github.io');
+    ga('send', 'pageview');
+  </script>
+  -->
+  <!-- TOC Generator -->
+  <script>
+     $('#toc').toc({exclude: 'h1, h6', autoId: true});
+  </script>
+</body>
+</html>

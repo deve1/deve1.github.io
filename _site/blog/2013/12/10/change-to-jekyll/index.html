@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--   <meta name="google-site-verification" content="aexITLS38FdIRzwj25OVWxm87rpa9l-UV0URTyC9cTs" /> -->
+  <title>
+    옥토프레스에서 pure 지킬로 갈아타다
+    
+    - @n0lb00's Blog
+    
+  </title>
+<!--   <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:700,400|Titillium+Web:700,400"> -->
+  <link rel="stylesheet" href="/css/site.css">
+  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <meta name="description" content="발전이 거의 없는 옥토프레스에서 깃허브 기본 엔진인 지킬로 블로그 엔진을 변경. 블로그 속도는 3배, 로컬 제너레이트는 10배, 온라인에서 직접 포스트를 변경할 수 있게 되었다" />
+  <link rel="alternate" type="application/atom+xml" title="RSS Feed for Nolboo's blog" href="/feed.xml" />
+  <script src="/js/instantclick.min.js" data-no-instant></script>
+  <script data-no-instant>InstantClick.init();</script>
+<!--    -->
+
+<!--<script src="//load.sumome.com/" data-sumo-site-id="dddbf0c343256757114aae302beff42fe1881da466f245b4369b4ba617fed69c" async="async"></script>-->
+
+  
+</head>
+<body>
+  <div class="top-bar"></div>
+
+  <div class="container">
+    <div class="site">
+      <header>
+        <nav>
+          <a class="" href="/">홈</a>
+          <a class="" href="/archive/">전체글</a>
+        </nav>
+        <div class="pull-right right logo">
+          <div class="name">
+            <a href="/">Memopad</a><br />
+            <small>
+              <em>
+                  <a href="/">Memorize everything</a>
+              </em>
+            </small>
+          </div>
+          <a href="/feed.xml"><img class="avatar" src="/images/rss.jpg" alt="RSS" /></a>
+        </div>
+        <div class="clear"></div>
+      </header>
+      <div class="separator"></div>
+      <article>
+  <h1>
+    옥토프레스에서 pure 지킬로 갈아타다
+  </h1>
+  <div class="center">
+    <p class="meta">10 Dec 2013</p>
+  </div>
+
+<!--    -->
+
+  <div class="post">
+  <div id="toc"><p class="toc_title">목차</p></div>
+
+<p>맥북 에어가 끊임없이 재부팅되는 현상 때문에 하드를 깨끗이 포맷하고 매버릭스 인터넷 복구로 OS X 부터 전부 다시 설치하였다. 그런데 옥토프레스에서 <code>source</code> 브랜치에 백업해둔다고 매번 푸시한 자료가 하나도 없는 것 아닌가? 깃허브에서 서비스되고 있는 옥토프레스의 컴파일 버전 - HTML, CSS, js 파일만 남은 상황이다. 옥토프레스를 처음 사용할 때에는 git도 처음 시작하여서 그냥 하라는 대로 하고 확인도 해보지 않은 것이 결정적인 실수이다ㅠㅠ</p>
+
+<h2>옥토프레스에서 지킬로~</h2>
+
+<p>옥토프레스는 블로깅을 위한 대부분의 기능이 구현되어 있어 편리하다. 그러나 포스트를 작성할 때마다 제너레이트한 후에 깃허브 페이지에 푸시해야 하기 때문에 시간도 시간이지만 번거로운 느낌이 많이 들었다. 그래서 이참에 <a href="http://jekyllrb.com/">jekyll</a>로 갈아타기로 했다.</p>
+
+<p>물론 인기있는 static 사이트 제너레이터인 <a href="http://docpad.org/">DocPad</a>도 검토하고 최근 발견하여 <a href="http://nolboo.github.io/blog/2013/10/17/start-blog-with-harp/">간단히 소개</a>한 적이 있는 Harp도 좀 더 깊게 검토해보았지만 DocPad는 기본 부트스트랩 템플릿을 제너레이트할 때 20초 정도 걸려서 탈락! harp는 기본 마크다운 라이브러리인 marked에서 지원되지 않는 기능이 많았고, 코드 하일라이트도 지원되지 않았다.</p>
+
+<p>깃허브에서는 지킬을 static 사이트 기본 엔진으로 사용하고 있어서, 사이트를 로컬에서 제너레이트하지 않고 그냥 푸시하기만 해도 자동으로 서버에서 제너레이트해준다. 로컬에서 테스트할 때만 사이트를 제너레이트하고 올릴 때는 그냥 제너레이트한 <code>_site</code> 부분은 빼고 올리면 된다.(<a href="http://nolboo.github.io/blog/2013/10/15/free-blog-with-github-jekyll/">지킬에 대한 기본 설명은 예전에 글을 올린 것이 있으니 처음 접하시는 분은 참조</a>) 단점이 있다면 지킬의 safe 모드 - 플러그인을 사용할 수 없는 모드만을 지원하기 때문에 지킬의 다양한 플러그인은 사용할 수 없다. 만약, 플러그인을 사용하고 싶다면 사이트를 제너레이트하여 <code>_site</code> 안의 파일들만 호스팅할 수도 있다.</p>
+
+<h2>기존 블로그 글 살리기</h2>
+
+<p>깃허브 블로그에 남아있는 예전 블로그글은 html 로만 남았기 때문에 마크다운으로 변환해야 했다. 물론, 지킬은 html 파일도 처리할 수 있지만 옥토프레스 테마와 플러그인이 적용된 상태라 html 파일을 수정하는 시간과 알고 있는 툴로 마크다운으로 변환하는 것이 비슷할 것 같아서 마크다운으로 변환하기 결했다. 사용한 툴은 다음과 같다:</p>
+
+<ol>
+<li><a href="http://heckyesmarkdown.com/">Heck Yes Markdown</a>: url을 입력하면 마크다운으로 변환한다.</li>
+<li><a href="http://html2markdown.com/">Html2MarkDown</a>: html 코드를 복사하여 넣으면 마크다운으로 변환한다.</li>
+</ol>
+
+<p>1번을 주로 사용하고 제대로 변경되지 않는 부분을 군데군데 2번으로 변환하였다. 시간은 예상보다 많이 걸렸다.(아.. 노가다.. 내 시간;;)</p>
+
+<h2>테마 선정</h2>
+
+<p>새롭게 만들기보다는 오픈소스 테마 중에서 선택하기로 맘먹고 <a href="http://nolboo.github.io/blog/2013/10/15/free-blog-with-github-jekyll/">이전 글</a>의 참고사항에 정리해 둔 링크들을 돌아다녔으나 막상 맘에 드는 것이 없었는데 우연히 맘에 드는 <a href="http://sebastien.saunier.me/">sebastien.saunier.me</a>을 발견하고 로컬에 클론하여 이것저것 살펴보았다. 이 테마에는 사이트 대화 기능의 <a href="http://www.olark.com/">Olark</a>, 분석을 위한 구글 애널리틱스, 댓글을 위한 Disqus가 추가되어 있었다. 그런데 로컬에서 띄워놓은 블로그에 세바스찬이 Olark으로 갑자기 대화를 걸어와서 깜짝 놀랐다. 자신의 Olark 모듈을 내려달라고 해서 얼른 내렸다. 구글 애널리틱스와 디스커스도 얼른 죽였다. 자신의 블로그를 어떻게 알았냐고 물어서 경로를 약간 설명하고 테마 사용 허락을 받으니 (일견 당연하지만) 흔쾌히 허락해주었다.</p>
+
+<p>깃허브 등에서 <strong>다른 사람의 오픈소스 테마를 테스트할 때는 위와 같은 모듈은 먼저 체크하여 disable한 후 테스트해야 한다.</strong></p>
+
+<h2>마크다운과 퍼머링크 설정</h2>
+
+<p>지킬은 여러가지 마크다운 엔진을 지원하는 데 그 중에서 맘에 드는 3 가지를 주요 기능 위주로 직접 비교 테스트한 결과 <code>redcarpet</code>을 사용하기로 하였다. 지킬은 기본으로 <code>maruku</code>를 사용하고, 깃허브는 기본으로 <code>redcarpet</code>을 사용하는데 그 중에서도 2.2.x를 지원한다. 아래 표는 비교결과이다.</p>
+
+<h3>마크다운 비교</h3>
+
+<table><thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center">Redcarpet v2</th>
+<th style="text-align: center">Kramdown</th>
+<th style="text-align: center">rdiscount</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>fenced code Blocks</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">✓</td>
+</tr>
+<tr>
+<td>table</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">✓</td>
+</tr>
+<tr>
+<td>no_intra_emphasis</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">✓</td>
+</tr>
+<tr>
+<td><del>strikethrough</del></td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">-</td>
+<td style="text-align: center">✓</td>
+</tr>
+<tr>
+<td>superscript</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">-</td>
+<td style="text-align: center">✓</td>
+</tr>
+<tr>
+<td>autolink</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">-</td>
+<td style="text-align: center">✓</td>
+</tr>
+<tr>
+<td>footnote</td>
+<td style="text-align: center">-</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">✓</td>
+</tr>
+<tr>
+<td>pygments</td>
+<td style="text-align: center">✓</td>
+<td style="text-align: center">CodeRay</td>
+<td style="text-align: center">-</td>
+</tr>
+<tr>
+<td>TOC</td>
+<td style="text-align: center">-</td>
+<td style="text-align: center">-</td>
+<td style="text-align: center">-</td>
+</tr>
+</tbody></table>
+
+<h3>퍼머링크(영구주소)</h3>
+
+<p>옥토프레스에선 기본으로 각 포스트 글의 영구주소를 <code>blog/년도/월/일/포스트-제목/</code>으로 만들어준다. 기존의 옥토프레스의 url을 그대로 가져와 지킬에서도 지속성을 가지기 위해서</p>
+
+<ol>
+<li> <code>_config.yml</code>에 <code>permalink: pretty</code>를 넣어주었다.(<code>permalink: /:categories/:year/:month/:day/:title/</code> 도 동일하다).</li>
+<li>각 포스트의 프론트 메터에 <code>category: blog</code>를 넣는다.</li>
+</ol>
+
+<p>자세한 내용은 <a href="http://jekyllrb.com/docs/permalinks/">Permalinks</a> 또는 <a href="http://svperstarz.github.io/jekyll-docs-ko/docs/permalinks/">고유주소</a>를 참조하면 된다.</p>
+
+<h3>기본 환경 설정</h3>
+
+<p>결과적으로 <code>_config.yml</code>의 내용은 다음과 같다:</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Nolboo&#39;s Blog</span>
+
+<span class="c1"># Oveerriden by GitHub Pages: https://help.github.com/articles/using-jekyll-with-pages#configuring-jekyll</span>
+<span class="l-Scalar-Plain">safe</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">pygments</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">lsi</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+
+<span class="l-Scalar-Plain">permalink</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">pretty</span>
+
+<span class="l-Scalar-Plain">markdown</span><span class="p-Indicator">:</span>     <span class="l-Scalar-Plain">redcarpet</span>
+
+<span class="l-Scalar-Plain">redcarpet</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">extensions</span><span class="p-Indicator">:</span> 
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">no_intra_emphasis</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">fenced_code_blocks</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">tables</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">strikethrough</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">superscript</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">autolink</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hard_wrap</span>
+</code></pre></div>
+<h2>홈페이지</h2>
+
+<p>테마를 가져온 <a href="http://sebastien.saunier.me/">sebastien.saunier.me</a>의 주인장인 세바스찬은 개인 홈페이지를 위주로 블로깅을 하고 있지만, 나는 블로그가 주목적이기 때문에 초기화면을 변경하였다. 루트 디렉토리의 <code>index.html</code>을 다음과 같이 변경하여 포스트 제목과 날자, 그리고 포스트 설명이 표시되도록 하였다.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">---
+layout: default
+title: Nolboo&#39;s Blog
+description: 호모스터디쿠스를 꿈꾸는 놀부
+---
+
+&lt;section&gt;
+  &lt;ul class=&quot;posts&quot;&gt;
+    {% for post in site.posts %}
+      &lt;li&gt;
+        &lt;h2&gt;
+          &lt;a href=&quot;{{ post.url }}&quot;&gt;{{ post.title }}&lt;/a&gt;
+        &lt;/h2&gt;
+        &lt;p&gt;
+          &lt;span class=&quot;date&quot;&gt;{{ post.date | date_to_string }}&lt;/span&gt;
+          &lt;span class=&quot;description&quot;&gt;{{ post.description }}&lt;/span&gt;
+        &lt;/p&gt;
+      &lt;/li&gt;
+    {% endfor %}
+  &lt;/ul&gt;
+&lt;/section&gt; 
+</code></pre></div>
+<p>포스트 글의 발췌본이 자동 생성되는 <code>excerp</code>는 한글이나 코드와 충돌하는 문제가 있었고, 컨텐츠의 처음부터 원하는 곳까지를 사용자가 직접 지정할 수 있는 <code>{{ excerpt_separator }}</code>을 삽입하는 방법도 잘 되지 않았다. 대안으로 각 포스트의 프론트매터에 <code>description</code>를 변수로 두어 직접 원하는 설명을 써넣는 방법을 사용하였다. <code>excerp</code>를 사용할 때보다 오히려 깔끔해서 더 마음에 들었다. 예를 들면:</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="nn">---</span>
+<span class="l-Scalar-Plain">layout</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">post</span>
+<span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="s">&quot;완전</span><span class="nv"> </span><span class="s">초보를</span><span class="nv"> </span><span class="s">위한</span><span class="nv"> </span><span class="s">깃허브&quot;</span>
+<span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="s">&quot;git을</span><span class="nv"> </span><span class="s">전혀</span><span class="nv"> </span><span class="s">모르던</span><span class="nv"> </span><span class="s">디자이너가</span><span class="nv"> </span><span class="s">10분</span><span class="nv"> </span><span class="s">안에</span><span class="nv"> </span><span class="s">자신의</span><span class="nv"> </span><span class="s">디자인</span><span class="nv"> </span><span class="s">파일을</span><span class="nv"> </span><span class="s">회사의</span><span class="nv"> </span><span class="s">저장소에</span><span class="nv"> </span><span class="s">올려</span><span class="nv"> </span><span class="s">협업할</span><span class="nv"> </span><span class="s">수</span><span class="nv"> </span><span class="s">있도록</span><span class="nv"> </span><span class="s">안내하는</span><span class="nv"> </span><span class="s">글의</span><span class="nv"> </span><span class="s">번역.</span><span class="nv"> </span><span class="s">이</span><span class="nv"> </span><span class="s">블로그에서</span><span class="nv"> </span><span class="s">가장</span><span class="nv"> </span><span class="s">많이</span><span class="nv"> </span><span class="s">읽혀진</span><span class="nv"> </span><span class="s">대박글!&quot;</span>
+<span class="l-Scalar-Plain">category</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">blog</span>
+<span class="nn">---</span>
+</code></pre></div>
+<h2>기타 페이지</h2>
+
+<p>한글 번역글 중에서 북마크해서 계속 읽어볼만한 글을 모아둔 <a href="http://nolboo.github.io/trans/">페이지</a>를 운영하고 있는데, 나름 많은 분들이 꾸준히 찾아주는 곳이다. 지킬에서 페이지를 생성하는 방법은 간단하다. 블로그 루트 디렉토리 밑에 원하는 이름의 디렉토리를 만들고 <code>index.md</code>나 <code>index.html</code>을 넣으면 된다.</p>
+
+<p><code>trans</code>란 디렉토리를 만들고 마크다운 형식으로 작성한 페이지를 <code>index.md</code>로 이름을 바꾸어 넣어준다. <code>index.md</code>는 파일명에 날자가 없기 때문에 프론트 메터에 <code>date:</code> 변수를 추가한다. 아래처럼 <strong>시간까지 모두 입력해야 한다.</strong></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">date: 2013-11-29 14:40:45
+</code></pre></div>
+<p>추가로 <code>archive</code>란 디렉토리를 만들고 <code>index.md</code>에 다음과 같이 넣어 전체 포스트 목록을 볼 수 있도록 하였다.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">---
+layout: default
+title: Nolboo&#39;s Blog
+description: 호모스터디쿠스를 꿈꾸는 놀부
+---
+
+&lt;ul&gt;
+  {% for post in site.posts %}
+    &lt;li&gt;
+      &lt;a href=&quot;{{ post.url }}&quot;&gt;{{ post.title }}&lt;/a&gt;
+      &lt;div&gt;&lt;small&gt;{{ post.date | date_to_string }}&lt;/small&gt;&lt;/div&gt;
+    &lt;/li&gt;
+  {% endfor %}
+&lt;/ul&gt;
+</code></pre></div>
+<p><code>_layout</code> 디렉토리의 내비게이션 바도 맞게 수정하고, 사이트 제목이나 설명 등의 나머지 내용도 전부 내 것으로 수정하였다. 물론 어렵게 살려낸 글들도 변경된 프론트매터를 추가하여 <code>_posts</code> 디렉토리에 넣었다.</p>
+
+<h2>Deploy</h2>
+
+<p>이제 깃허브에 올리면 된다. 올리기 전에 로컬 테스트하면서 제너레이트된 <code>_site</code> 디렉토리를 제외한다. 텍스트에디터로 <code>.gitignore</code> 파일을 만들고 <code>_site/</code>를 삽입하고 저장한다.</p>
+
+<p>현재 서비스되고 있는 블로그의 저장소를 <code>nolboo.github.io.backup</code>으로 이름을 변경하여 백업하고, 새롭게 <code>nolboo.github.io</code> 저장소를 만든다.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">git remote add origin 저장소URL
+git add . -A
+git commit -m &quot;change to jekyll&quot;
+git push orgin master
+</code></pre></div>
+<p>로컬에서 <code>jekyll serve</code>로 확인할 때 에러가 나지 않았다면 대부분 잘 올라간다. 단, 깃허브에 static 사이트를 푸시하면 바로 적용되는 경우도 있지만 2,3분 또는 최대 10분 정도를 기다려야 한다.</p>
+
+<h2>그 외</h2>
+
+<h3>RSS</h3>
+
+<p>기존 테마의 <code>feed.xml</code>에서 <code>description</code>부분에 블로그 글의 내용이 모두 들어가도록 되어 있어, 내 경우에 맞게 <a href="https://github.com/nolboo/nolboo.github.io/blob/master/feed.xml.old">수정</a>하였다. 추가적으로 <a href="http://we.weirdmeetup.com/">이상한 모임 팀블로그</a>에서 발췌 목록이 나오도록 하기 위해 옥토프레스 <a href="https://github.com/imathis/octopress/blob/master/.themes/classic/source/atom.xml">atom.xml</a>을 파보려는데 <a href="https://twitter.com/armv9">@armv9</a>님이 추천하신 <a href="https://gist.github.com/aahan/5228376">gist</a>로 대체하였더니 팀블로그 플랫폼인 워드프레스와 궁합이 잘 맞게 설정되었다.</p>
+
+<h3>CSS</h3>
+
+<p>코드 하일라이트 스타일 시트인 <code>syntax.css</code>가 너무 밋밋했다. 검색해보니 지킬 버전 <a href="https://gist.github.com/edwardhotchkiss/2005058">Solarized Light Pygments CSS</a>를 공개한 gist가 있어 얼른 가져왔다. 하일라이트되는 부분의 보더가 너무 두꺼워 보이고 긴 줄의 글자가 넘쳐서 그 부분의 css를 약간 수정하였다.</p>
+
+<h2>변경 소감</h2>
+
+<ul>
+<li>블로그의 속도가 3배 이상 빨라졌다.</li>
+<li>테마가 산뜻하고 좋으며 직접 변경하기도 쉽다.</li>
+<li>포스트를 한 글자만 변경하여도 매번 제너레이트시켜야 하는 불편함이 사라졌고, CSS나 테마 등을 변경한 후 로컬 테스트를 위해 제너레이트하더라도 그 속도가 체감상 10배 정도 향상되었다. 지킬이 왜 가장 인기가 있는지 알 수 있는 대목이다.</li>
+<li>마크다운 형태의 블로그 글이 그대로 올라가기 때문에 소스를 별도로 백업할 필요가 없어졌으며, 포스트의 변경사항을 깃허브 에디터나 <a href="http://prose.io/">prose.io</a> 등을 이용해 온라인에서 직접 변경할 수 있다.</li>
+</ul>
+
+<h3>참조 링크</h3>
+
+<ul>
+<li><a href="http://svperstarz.github.io/jekyll-docs-ko/">지킬 공식 사이트 한글 번역</a></li>
+<li><a href="http://nolboo.github.io/blog/2013/10/15/free-blog-with-github-jekyll/">지킬로 깃허브에 무료 블로그 만들기</a></li>
+<li><a href="http://nolboo.github.io/blog/2014/04/15/how-to-use-markdown/">놀부의 마크다운 사용법 - 무료 툴을 중심으로 한 워크플로우</a></li>
+</ul>
+
+  </div>
+  <ul class="tags post-tags cf">
+    
+    <li><a href="/search/?tags=jekyll">jekyll</a></li>
+    
+    <li><a href="/search/?tags=blog">blog</a></li>
+    
+    <li><a href="/search/?tags=redcarpet">redcarpet</a></li>
+    
+    <li><a href="/search/?tags=markdown">markdown</a></li>
+    
+    <li><a href="/search/?tags=octopress">octopress</a></li>
+    
+  </ul>
+</article>
+
+<section class="post-footer">
+  <a href="/feed.xml" class="pull-right">
+    <img src="/images/rss.jpg" alt="RSS" />
+  </a>
+</section>
+
+<script defer src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<!-- tag, category search -->
+<script defer src="/js/alexpearce.js"></script>
+
+<div class="separator"></div>
+
+<section class="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'deve1githubio'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+      <div class="separator"></div>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+
+  <footer>
+    <p>
+  Powered by <a href="http://jekyllrb.com/">Jekyll</a>,
+  hosted on <a href="http://pages.github.com/">Github Pages</a>
+  | Template inspired by <a href="http://sebastien.saunier.me/">sebastien.saunier.me</a>
+</p>
+
+  </footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <!-- tag, category search -->
+  <script src="/js/alexpearce.js"></script>
+  <!-- TOC Generator -->
+  <script src="/js/jquery.toc-1.1.4.min.js"></script>
+  <!-- Google Analytics -->
+  <!--
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42615434-1', 'nolboo.github.io');
+    ga('send', 'pageview');
+  </script>
+  -->
+  <!-- TOC Generator -->
+  <script>
+     $('#toc').toc({exclude: 'h1, h6', autoId: true});
+  </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--   <meta name="google-site-verification" content="aexITLS38FdIRzwj25OVWxm87rpa9l-UV0URTyC9cTs" /> -->
+  <title>
+    코드캐더미로 배우는 레일즈 기초 3부
+    
+    - @n0lb00's Blog
+    
+  </title>
+<!--   <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:700,400|Titillium+Web:700,400"> -->
+  <link rel="stylesheet" href="/css/site.css">
+  <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <meta name="description" content="many-to-many 모델을 사용한 영화와 배우 정보를 보여주는 앱을 만든다." />
+  <link rel="alternate" type="application/atom+xml" title="RSS Feed for Nolboo's blog" href="/feed.xml" />
+  <script src="/js/instantclick.min.js" data-no-instant></script>
+  <script data-no-instant>InstantClick.init();</script>
+<!--    -->
+
+<!--<script src="//load.sumome.com/" data-sumo-site-id="dddbf0c343256757114aae302beff42fe1881da466f245b4369b4ba617fed69c" async="async"></script>-->
+
+  
+</head>
+<body>
+  <div class="top-bar"></div>
+
+  <div class="container">
+    <div class="site">
+      <header>
+        <nav>
+          <a class="" href="/">홈</a>
+          <a class="" href="/archive/">전체글</a>
+        </nav>
+        <div class="pull-right right logo">
+          <div class="name">
+            <a href="/">Memopad</a><br />
+            <small>
+              <em>
+                  <a href="/">Memorize everything</a>
+              </em>
+            </small>
+          </div>
+          <a href="/feed.xml"><img class="avatar" src="/images/rss.jpg" alt="RSS" /></a>
+        </div>
+        <div class="clear"></div>
+      </header>
+      <div class="separator"></div>
+      <article>
+  <h1>
+    코드캐더미로 배우는 레일즈 기초 3부
+  </h1>
+  <div class="center">
+    <p class="meta">23 May 2015</p>
+  </div>
+
+<!--    -->
+
+  <div class="post">
+  <p><a href="http://nolboo.github.io/blog/2015/05/17/rails-codecademy-2/">코드캐더미로 배우는 레일즈 기초 2부</a>에서 두 개의 모델을 사용하여 데이터를 저장하는 앱을 만들었다. 데이터 간에 one-to-many 관계를 만들기 위해 <code>has_many</code> / <code>belongs_to</code> 를 사용하였다.</p>
+
+<h2>MovieApp</h2>
+
+<p>영화는 배역을 맡은 많은 배우가 있고, 각 배우는 역시 출연한 많은 영화가 있다. 이러한 데이터를 모델링하기 위해서는 many-to-many 관계가 필요하다. 영화 웹사이트를 위한 레일즈앱을 만들어 보자.</p>
+
+<pre class="terminal">
+    rails new MovieApp
+    cd MovieApp
+    bundle install
+</pre>
+
+<h3>Model</h3>
+
+<p>Movie, Actor, Part 모델을 제너레이트한다.</p>
+
+<pre class="terminal">
+    rails generate model Movie
+    rails generate model Actor
+    rails generate model Part
+</pre>
+
+<p><code>app/models/movie.rb</code>에 다음 매서드를 추가한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">has_many</span> <span class="ss">:parts</span> 
+<span class="n">has_many</span> <span class="ss">:actors</span><span class="p">,</span> <span class="ss">through</span><span class="p">:</span> <span class="ss">:parts</span>
+</code></pre></div>
+<p><code>Movie</code> 모델과 <code>Actor</code> 모델을 <code>Part</code> 모델을 통해서 연결하기 위해 <code>has_many :through</code>를 사용한다. <code>has_many :through</code>가 영화와 배우 간의 many-to-many 관계를 만든다.</p>
+
+<p><code>app/models/actor.rb</code>에 다음 매서드를 추가한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">has_many</span> <span class="ss">:parts</span> 
+<span class="n">has_many</span> <span class="ss">:movies</span><span class="p">,</span> <span class="ss">through</span><span class="p">:</span> <span class="ss">:parts</span>
+</code></pre></div>
+<p><code>app/models/part.rb</code>에 다음 매서드를 추가한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">belongs_to</span> <span class="ss">:movie</span> 
+<span class="n">belongs_to</span> <span class="ss">:actor</span>
+</code></pre></div>
+<p><img src="http://s3.amazonaws.com/codecademy-content/courses/learn-rails/img/has-many-through.svg" alt=""></p>
+
+<p>계속해서 <code>db/migrate/</code> 안의 movies 테이블을 위한 마이그레이션 파일에 다음 컬럼을 추가한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:title</span>
+<span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:image</span>
+<span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:release_year</span>
+<span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:plot</span>
+</code></pre></div>
+<p>actors 테이블을 위한 마이그레이션 파일에 다음 컬럼을 추가한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:first_name</span>
+<span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:last_name</span>
+<span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:image</span>
+<span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:bio</span>
+</code></pre></div>
+<p>parts 테이블을 위한 마이그레이션 파일에 다음을 추가하여 영화와 배우 테이블을 가리키는 foreign keys를 추가한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">t</span><span class="o">.</span><span class="n">belongs_to</span> <span class="ss">:movie</span><span class="p">,</span> <span class="ss">index</span><span class="p">:</span> <span class="kp">true</span> 
+<span class="n">t</span><span class="o">.</span><span class="n">belongs_to</span> <span class="ss">:actor</span><span class="p">,</span> <span class="ss">index</span><span class="p">:</span> <span class="kp">true</span>
+</code></pre></div>
+<p>세 가지 테이블로 데이터베이스를 업데이트한다:</p>
+
+<pre class="terminal">
+    rake db:migrate
+    rake db:migrate:status // 세 모델이 만들어졌는지 상태를 확인할 수 있다.
+</pre>
+
+<p><a href="https://github.com/nolboo/rails-codecademy-MovieApp/blob/master/db/seeds.rb">미리 준비된 seed.rb</a>로 영화와 배우에 대한 데이터를 공급한다:</p>
+
+<pre class="terminal">
+    rake db:seed
+</pre>
+
+<h3>Route</h3>
+
+<pre class="terminal">
+    rails generate controller Movies
+</pre>
+
+<p>라우터 파일 <code>config/routes.rb</code>에 <code>/movies</code> URL을 Movies 컨트롤러의 index 액션을 매핑한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">get</span> <span class="s1">&#39;/movies&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;movies#index&#39;</span>
+</code></pre></div>
+<p>Movies 컨트롤러 안에 모든 영화를 보여주는 <code>index</code> 액션을 추가한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@movies</span> <span class="o">=</span> <span class="no">Movie</span><span class="o">.</span><span class="n">all</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>app/views/movies/index.html.erb</code>를 만들고 뷰에 해당하는 코드를 입력한다:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hero&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>Interstellar<span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Former NASA pilot Cooper (Matthew McConaughey) and a team of researchers travel across the galaxy to find out which of three planets could be mankind&#39;s new home.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Read More<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;main&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Popular Films<span class="nt">&lt;/h2&gt;</span>
+
+    <span class="err">&lt;</span>% @movies.each do |m| %&gt;
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;movie&quot;</span><span class="nt">&gt;</span>
+      <span class="err">&lt;</span>%= image_tag m.image %&gt;
+      <span class="nt">&lt;h3&gt;</span><span class="err">&lt;</span>%= m.title %&gt;<span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;p&gt;</span><span class="err">&lt;</span>%= m.release_year %&gt;<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="err">&lt;</span>% end %&gt;
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<p>스타일링을 위해 <a href="https://github.com/nolboo/rails-codecademy-MovieApp/blob/master/app/assets/stylesheets/application.css">applcation.css</a>를 입력한다.</p>
+
+<p>이제 <code>http://localhost:3000/movies</code>을 방문하면 아래와 같은 멋진 앱이 뜬다.</p>
+
+<p><img src="https://c1.staticflickr.com/9/8869/17703985109_63e7ed1ae9_b.jpg" alt=""></p>
+
+<p>라우트 파일에 <code>/movies/1</code>과 같은 URL에 대한 요청을 Movie 컨트롤러의 <code>show</code> 액션으로 보내고, 이 라우트를 &quot;movie&quot;라고 부른다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">get</span> <span class="s1">&#39;/movies/:id&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;movies#show&#39;</span><span class="p">,</span> <span class="ss">as</span><span class="p">:</span> <span class="ss">:movie</span>
+</code></pre></div>
+<p>Movies 컨트롤러 파일에 특정 영화와 그 배우들을 보여주는 <code>show</code> 액션을 추가한다.</p>
+
+<ul>
+<li><code>id</code>로 영화를 찾기 위해 <code>Movie.find</code>를 먼서 사용하고,</li>
+<li>영화에 속한 모든 배우를 가져와서, <code>@actors</code>에 저장한다:</li>
+</ul>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@movie</span> <span class="o">=</span> <span class="no">Movie</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+  <span class="vi">@actors</span> <span class="o">=</span> <span class="vi">@movie</span><span class="o">.</span><span class="n">actors</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>app/view/movies/show.html.erb</code>를 만들고 다음을 입력한다:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;main movie-show&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;movie&quot;</span><span class="nt">&gt;</span>
+
+      <span class="c">&lt;!-- Display the movie&#39;s info here --&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;info&quot;</span><span class="nt">&gt;</span>
+        <span class="err">&lt;</span>%= image_tag @movie.image %&gt;
+        <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">&quot;movie-title&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= @movie.title %&gt;<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;movie-release-year&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= @movie.release_year %&gt;<span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;movie-plot&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= @movie.plot %&gt;<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;h2&gt;</span>Cast<span class="nt">&lt;/h2&gt;</span>
+    <span class="err">&lt;</span>% @actors.each do |actor| %&gt;
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;actor&quot;</span><span class="nt">&gt;</span>
+      <span class="err">&lt;</span>%= image_tag actor.image %&gt;
+      <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">&quot;actor-name&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= actor.first_name %&gt; <span class="err">&lt;</span>%= actor.last_name %&gt;<span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;actor-bio&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= actor.bio %&gt;<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="err">&lt;</span>% end %&gt;
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<p><code>app/views/movies/index.html.erb</code>의 movie&#39;s plot 밑에 <code>link_to</code>를 이용하여 &quot;Learn more&quot; 텍스트 링크를 만들고, <code>show</code> 라우트를 &quot;movie&quot;로 명명하였기 때문에 레일즈가 만들어주는 <code>movie_path</code> 헬퍼 매서드를 사용하여 각 영화의 패스로 URL을 제너레이트해주는 것을 이용한다:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span><span class="err">&lt;</span>%= movie.plot %&gt;<span class="nt">&lt;/p&gt;</span>
+<span class="err">&lt;</span>%= link_to &quot;Learn more&quot;, movie_path(movie) %&gt;
+</code></pre></div>
+<ul>
+<li>여기서 <code>m</code> 변수를 <code>movie</code> 변수로 갑자기 바꿨는데, 가독성이 좀 더 나은 것 같아서 그대로 다 변경하였다.</li>
+</ul>
+
+<p>이제 &quot;Learn more&quot;를 클릭하면 영화 정보와 배우들의 정보를 볼 수 있다:</p>
+
+<p><img src="https://c4.staticflickr.com/8/7695/17998355281_896652d302_b.jpg" alt=""></p>
+
+<p>이제 배우가 출연한 모든 영화를 볼 수 있도록 해보자.</p>
+
+<p>&quot;Actors&quot;라는 컨트롤러를 제너레이트한다:</p>
+
+<pre class="terminal">
+  rails generate controller Actors
+</pre>
+
+<p>라우트 파일에 <code>/actors</code> URL을 Actors 컨트롤러의 <code>index</code> 액션에 매팅하는 라우트를 추가한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="n">get</span> <span class="s1">&#39;/actors&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;actors#index&#39;</span>
+</code></pre></div>
+<p>컨트롤러에 모든 배우 목록을 보여주는 <code>index</code> 액션을 추가한다.</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">index</span>
+  <span class="vi">@actors</span> <span class="o">=</span> <span class="no">Actor</span><span class="o">.</span><span class="n">all</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>app/views/actors/index.html.erb</code>를 만들고 다음을 입력한다:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;main actor-index&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+      <span class="err">&lt;</span>% @actors.each do |actor| %&gt;
+       <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;actor col-xs-2&quot;</span><span class="nt">&gt;</span>
+         <span class="err">&lt;</span>%= image_tag actor.image %&gt;
+         <span class="nt">&lt;h3&gt;</span><span class="err">&lt;</span>%= actor.first_name + &quot; &quot; + actor.last_name %&gt;<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;p&gt;</span><span class="err">&lt;</span>%= actor.bio %&gt;<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+      <span class="err">&lt;</span>% end %&gt;
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<p>라우트 파일로 돌아가서 <code>/actors/1</code>과 같은 URL에 대한 요청을 Actors 컨트롤러의 <code>show</code> 액션으로 보내주는 라우트를 추가하고, &quot;actor&quot;로 명명한다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">get</span> <span class="s1">&#39;/actors/:id&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;actors#show&#39;</span><span class="p">,</span> <span class="ss">as</span><span class="p">:</span> <span class="ss">:actor</span>
+</code></pre></div>
+<p>그리고 컨트롤러에 각 배우와 출연한 영화를 보여주는 <code>show</code> 액션을 추가한다. id로 배우를 먼저 찾고, 배우가 출연한 모든 여와를 보여준다:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@actor</span> <span class="o">=</span> <span class="no">Actor</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+  <span class="vi">@movies</span> <span class="o">=</span> <span class="vi">@actor</span><span class="o">.</span><span class="n">movies</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>app/views/actors/show.html.erb</code>를 만들고 다음을 입력한다:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;main actor-show&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+
+    <span class="c">&lt;!-- Display an actor&#39;s info here --&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;actor&quot;</span><span class="nt">&gt;</span>
+      <span class="err">&lt;</span>%= image_tag @actor.image %&gt;
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;info&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">&quot;actor-name&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= @actor.first_name + &quot; &quot; + @actor.last_name %&gt;<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;actor-bio&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= @actor.bio %&gt;<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;h2&gt;</span>Movies<span class="nt">&lt;/h2&gt;</span>
+    <span class="c">&lt;!-- Display each movie&#39;s info here --&gt;</span>
+    <span class="err">&lt;</span>% @movies.each do |movie| %&gt;
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;movie&quot;</span><span class="nt">&gt;</span>
+      <span class="err">&lt;</span>%= image_tag movie.image %&gt;
+      <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">&quot;movie-title&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= movie.title %&gt;<span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;movie-release-year&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= movie.release_year %&gt;/p&gt;
+      <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;movie-plot&quot;</span><span class="nt">&gt;</span><span class="err">&lt;</span>%= movie.plot %&gt;<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="err">&lt;</span>% end %&gt;
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<p>마지막으로 <code>app/views/actors/index.html.erb</code>를 만들고 &quot;Learn more&quot; 이름의 링크를 <code>link_to</code>를 사용하여 만들고 <code>actor_path</code>를 이용한다:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="err">&lt;</span>%= link_to &quot;Learn more&quot;, actor_path(actor) %&gt;
+</code></pre></div>
+<p>소스코드의 위치와 내용을 <a href="https://github.com/nolboo/rails-codecademy-MovieApp">깃허브</a>에 올려놓았다.</p>
+
+<p>배우와 영화가 many-to-many 관계를 사용하여 모델링할 수 있다 레일즈에서는 <code>has_many:through</code>를 사용하는 것도 제공된다. <code>has_many:through</code> 관계는 세번째 모델을 이용하여 두 모델을 조인한다.</p>
+
+<p>축하한다! 코드캐더미 레일즈 코스를 다 마친 것이다.</p>
+
+<h2>맺음말</h2>
+
+<p>코드캐더미의 레일즈 강좌는 레일즈의 MVC 속성을 쉬운 앱부터 시작하여 여러 형태의 앱을 반복해서 만들어 볼 수 있다. 비슷한 코드를 계속해서 입력하게 하기 때문에 나름대로 처음 접한 MVC의 이해도를 높을 수 있었다. 그런데 3개의 글을 그냥 읽기만하는 블로그 독자에게는 매우 지루한 일일수도 있을 것 같다는 생각이 든다. 직접 강좌를 하면서 참고용으로 삼기 바란다=3=3=3</p>
+
+<h2>추천 링크</h2>
+
+<ul>
+<li><a href="https://www.youtube.com/watch?v=MrGYKo50Dqg&amp;list=PLSXDqiI4sC5PsASjJy7dBncALnhjud2fx">Ruby/Rails 4.0 - Lecture 1/29 - Intro to Rails - YouTube</a>: 
+여기저기 기웃거리다가 괜찮은 동영상을 만났다. 설명도 자세한 편이고 무엇보다 실수를 많이 하면서(때론 유도하면서) 그걸 해결하는 것을 직접 보여주는 것이 익살스럽다. 총 29개의 비디오로 구성되어 있으며 23번째를 보기 시작하면서 추천하는 것이다.</li>
+<li><a href="http://www.insightbook.co.kr/books/programming-insight/%EB%A0%88%EC%9D%BC%EC%8A%A4%EC%99%80-%ED%95%A8%EA%BB%98-%ED%95%98%EB%8A%94-%EC%95%A0%EC%9E%90%EC%9D%BC-%EC%9B%B9-%EA%B0%9C%EB%B0%9C-%EA%B0%9C%EC%A0%95%ED%8C%90">레일스와 함께 하는 애자일 웹 개발 개정판 | 도서출판 인사이트</a> - 원본 : <a href="http://www.amazon.com/Agile-Development-Rails-Facets-Ruby/dp/1937785564/ref=sr_1_1?ie=UTF8&amp;qid=1434097925&amp;sr=8-1&amp;keywords=agile-web-development-with-rails-4">Agile Web Development with Rails 4 (Facets of Ruby): Sam Ruby, Dave Thomas, David Heinemeier Hansson</a></li>
+<li><a href="https://www.railstutorial.org/book">Ruby on Rails Tutorial (3rd Ed.)</a></li>
+</ul>
+
+  </div>
+  <ul class="tags post-tags cf">
+    
+    <li><a href="/search/?tags=codecademy">codecademy</a></li>
+    
+    <li><a href="/search/?tags=course">course</a></li>
+    
+    <li><a href="/search/?tags=rails">rails</a></li>
+    
+    <li><a href="/search/?tags=ruby">ruby</a></li>
+    
+  </ul>
+</article>
+
+<section class="post-footer">
+  <a href="/feed.xml" class="pull-right">
+    <img src="/images/rss.jpg" alt="RSS" />
+  </a>
+</section>
+
+<script defer src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<!-- tag, category search -->
+<script defer src="/js/alexpearce.js"></script>
+
+<div class="separator"></div>
+
+<section class="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'deve1githubio'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+      <div class="separator"></div>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+
+  <footer>
+    <p>
+  Powered by <a href="http://jekyllrb.com/">Jekyll</a>,
+  hosted on <a href="http://pages.github.com/">Github Pages</a>
+  | Template inspired by <a href="http://sebastien.saunier.me/">sebastien.saunier.me</a>
+</p>
+
+  </footer>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <!-- tag, category search -->
+  <script src="/js/alexpearce.js"></script>
+  <!-- TOC Generator -->
+  <script src="/js/jquery.toc-1.1.4.min.js"></script>
+  <!-- Google Analytics -->
+  <!--
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42615434-1', 'nolboo.github.io');
+    ga('send', 'pageview');
+  </script>
+  -->
+  <!-- TOC Generator -->
+  <script>
+     $('#toc').toc({exclude: 'h1, h6', autoId: true});
+  </script>
+</body>
+</html>
