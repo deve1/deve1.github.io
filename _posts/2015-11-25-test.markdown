@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Test"
+title: "마크다운 테스트"
 description: ""
 category: blog
 tags: [markdown, syntax]
