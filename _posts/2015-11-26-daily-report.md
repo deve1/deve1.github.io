@@ -18,4 +18,4 @@ tags: [금융, 달러]
 * 이번 주에는 미국 소비심리지수 부진과 함께 달러지수가 소폭 하락했는데, 다음 주 발표될 예정인 ISM제조업지수가 개선되고, 실질임금 상승률도 개선세를 이어간다면 미국 국채금리 상승과 함께 달러지수가 100p를 돌파할 가능성이 높다.
 * 미국 지표가 좋아지는 것은 시차를 두고 신흥국에도 좋은 일이지만 지금 당장에는 9개월 만에 돌파하는 달러지수 100p라는 상징성이 더 부담이 될 듯하다.
 
-[발췌](http://finance.naver.com/research/economy_read.nhn?nid=3565&page=1)
+[네이버금융에서 발췌](http://finance.naver.com/research/economy_read.nhn?nid=3565&page=1)
