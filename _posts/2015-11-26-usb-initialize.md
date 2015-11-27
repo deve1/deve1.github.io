@@ -3,7 +3,7 @@ layout: post
 title: "Windows command로 USB 초기화하기"
 description: ""
 category: blog
-tags: [windows, command, diskpart, USB]
+tags: [windows]
 ---
 
 # Windows Command로 USB 초기화하기

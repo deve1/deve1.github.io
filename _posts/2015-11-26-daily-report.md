@@ -2,8 +2,8 @@
 layout: post
 title: "달러인덱스 100p 근접의 의미"
 description: ""
-category: 금융
-tags: [금융, 달러]
+category: blog
+tags: [Money]
 ---
 
 # 달러, 선진국과 신흥국 통화 대비 강세가 재개되는 양상
