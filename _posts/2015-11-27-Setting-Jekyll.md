@@ -1,5 +1,6 @@
 ---
-layout: blog
+layout: post
+category: blog
 tags: 
   - Jekyll
   - Ubuntu
