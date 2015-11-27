@@ -3,7 +3,7 @@ layout: blog
 tags: 
   - Jekyll
   - Ubuntu
-published: false
+published: true
 ---
 
 ## Setting Jekyll Bloging Environment
