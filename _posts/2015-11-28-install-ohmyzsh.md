@@ -3,7 +3,7 @@ layout: post
 tags: 
   - Ubuntu
   - Linux
-published: false
+published: true
 ---
 
 # Oh-my-zsh 설치하기
