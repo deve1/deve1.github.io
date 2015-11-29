@@ -55,7 +55,8 @@ gem 'sass', '3.4.16'
 gem 'safe_yaml', '1.0.4'
 ```
 
-### 5. Check Jekyll version
+### 5. Install & Check Jekyll version
 ```
+Bundle install
 jekyll -v
 ```
