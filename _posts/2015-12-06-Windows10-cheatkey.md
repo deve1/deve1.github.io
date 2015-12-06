@@ -2,7 +2,7 @@
 layout: post
 tags: 
   - Windows
-published: false
+published: true
 ---
 
 ## 윈도우10 단축키
